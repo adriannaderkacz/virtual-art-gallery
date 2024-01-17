@@ -1,4 +1,4 @@
-# Weather-App
+# Virtual-Art-Gallery
 
 The Virtual Art Gallery is an innovative online platform designed to provide art enthusiasts with an immersive experience in exploring and appreciating art from around the world. This project leverages two key server-side APIs: the Harvard Art Museums API and the Europeana Collections API. The Harvard Art Museums API offers extensive data on their art collections, providing a diverse range of artworks from various eras and cultures. Meanwhile, the Europeana Collections API focuses on European art, offering a rich selection of artworks from across the European continent.
 
