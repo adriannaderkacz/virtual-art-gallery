@@ -25,6 +25,7 @@
 const userSearch = $("#search-input")
 const userBtn = $("#search-button")
 const harvardKey = "etticens"
+let results = []
 
 function fetchingAPI(){
     const harvardQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${harvardKey}&query=what:("${userSearch.val()}")`
@@ -40,8 +41,13 @@ function fetchingAPI(){
 
 function tempStoreData(data){
     for(i=0;i<data.items.length;i++){
-
+        results[i] = { 
+            title: data.items[i].title[0],
+            //artist: data.items[i].dcCreator[0]
+        }
     }
+    console.log(results)
+}
 
 userBtn.on("click", function(e){
     e.preventDefault()
