@@ -1,0 +1,35 @@
+.nav-link {
+    position: relative;
+    display: inline-block;
+}
+
+/*Underlying effect*/
+.nav-link::after {
+    content: '';
+    opacity: 0;
+    transition: all 0.2s;
+    height: 2px;
+    width: 50%;
+    background-color: rgb(102, 100, 100);
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    opacity: 1;
+}
+
+/*Underlying effect stays under the page user is currently on*/
+.active-link::after {
+    content: '';
+    opacity: 1;
+    height: 2px;
+    width: 50%;
+    background-color: rgb(102, 100, 100);
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
