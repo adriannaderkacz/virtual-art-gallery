@@ -1,32 +1,20 @@
-// var  userInput = get user input
-// 
-// key1 = HarverdApiKey
-// key2 = EuropeanaApiKey
-// url1 = EuropeanaURl
-//
-//  function fetchingAPI(){
-//      api call = EuropeanaURL + key2 + user input 
-//      
-//      fetch(api call)
-//      .then(JSON)
-//          return JSON
-//      .then(data)
-//          console.log(data)
-//          
-//          for(i=0;i<data.items.length;i++){
-//             card.attr("src", "data.items[i].edmIsShownBy[0]") 
-//}
-// on click...
-//     
-//     
-//      fetchingAPIA()
-//          
-
+/**
+ * 
+ * CODE CREATED BY: DAVOU JOBBI
+ * 
+ * CONTRIBUTIONS: AHMED IBRAHIM
+ * 
+ **/
 const userSearch = $("#search-input")
 const userBtn = $("#search-button")
 const harvardKey = "etticens"
 let results = []
 
+/**
+ * 
+ * FUNCTION FOR FETCHING THE QUERIES FROM RELEVANT APIS
+ * 
+ **/
 function fetchingAPI(){
     const harvardQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${harvardKey}&query=what:("${userSearch.val()}")`
 
@@ -39,11 +27,27 @@ function fetchingAPI(){
     })
 }
 
+/**
+ * 
+ * FUNCTION FOR TEMPORARILY STORING THE RESULTS OF THE..
+ * API FETCH TO DISPLAY ON SCREEN
+ * 
+ **/
 function tempStoreData(data){
     for(i=0;i<data.items.length;i++){
+        let creator = ""
+
+        try {
+            creator = data.items[i].dcCreator[0]
+        } catch (error) {
+            creator = "Unknown"
+        }
+
         results[i] = { 
             title: data.items[i].title[0],
-            //artist: data.items[i].dcCreator[0]
+            artist: creator,
+            provider: data.items[i].provider
+        
         }
     }
     console.log(results)
