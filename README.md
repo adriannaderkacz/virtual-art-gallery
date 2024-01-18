@@ -16,7 +16,7 @@ For client-side storage, the Virtual Art Gallery allows users to save their favo
 
 ## Deployment
 
-Application deployed via the live GitHub URL: *LIVE PAGE URL HERE*.
+Application deployed via the live GitHub URL: https://adriannaderkacz.github.io/virtual-art-gallery/.
 
 
 ![Gif of page](/assets/images/placeholderimg.png)
