@@ -8,6 +8,7 @@
 const harvardKey = "etticens"
 let results = []
 let tempResults
+const userSearch2 = $("#search-input")
 
 /**
  * 
@@ -77,7 +78,7 @@ displayData()
         for(let i=0;i<results.length;i++){
             
             $("img").eq(i).attr("src", results[i].image)
-            $("#description").eq(i).text(results[i].title + "\n" + results[i].creator)
+            $("p").eq(i).text("Name: " + results[i].title + " Artist: " + results[i].artist)
         }
     
     }
@@ -92,8 +93,21 @@ $(document).ready(function(){
     tempResults.then(function test(result){
         displayData()
     })
+    
+})
+userSearch.on("keypress", function(e){
+    
+    localStorage.setItem("search", JSON.stringify(userSearch2.val()))
+    var key = e.which;
+    if(key == 13)  // the enter key code
+    {
+        tempResults = fetchingAPI()
 
-
+        tempResults.then(function test(result){
+            displayData()
+        })
+        
+    }
     
     
 })
