@@ -38,18 +38,26 @@ function fetchingAPI(){
 function tempStoreData(data){
     for(let i=0;i<data.items.length;i++){
         let creator = ""
+        let img = ""
 
         try {
             creator = data.items[i].dcCreator[0]
         } catch (error) {
             creator = "Unknown"
         }
-
+        try {
+            img = data.items[i].edmIsShownBy[0]
+        } catch (onerror) {
+            img = "./Assets/images/searchImgPlaceholder.jpeg"
+        }
+        img.onerror = function(){
+            img = "./Assets/images/searchImgPlaceholder.jpeg"
+        }
         results[i] = { 
             title: data.items[i].title[0],
             artist: creator,
             provider: data.items[i].provider[0],
-            image: data.items[i].edmIsShownBy[0]
+            image: img
         }
     }
     console.log(results)
@@ -67,9 +75,9 @@ displayData()
     function displayData(){
     
         for(let i=0;i<results.length;i++){
-            console.log("test")
+            
             $("img").eq(i).attr("src", results[i].image)
-            $("#description").eq(i).text("test")
+            $("#description").eq(i).text(results[i].title + "\n" + results[i].creator)
         }
     
     }

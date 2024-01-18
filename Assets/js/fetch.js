@@ -10,7 +10,7 @@ const userSearch = $("#search-input")
 
 userSearch.on("keypress", function(e){
     
-    e.preventDefault()
+    //e.preventDefault()
     localStorage.setItem("search", JSON.stringify(userSearch.val()))
     var key = e.which;
     if(key == 13)  // the enter key code
