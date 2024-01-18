@@ -48,11 +48,46 @@
 <!-- DAVOU - ADDED IDS FOR SELECTORS IN JS -->
 <div class="search-btn">
     <i class="fa-solid fa-magnifying-glass"></i>
-    <input type="search" id="search-input" name="">
+    <input type="search" id="search-input" name="" placeholder="Search for ">
 </div>
 </section>
+<!--<span class="auto-type">Art</span>-->
 
 <footer></footer>
+<!--Auto-type effect for the search button on the main page-->
+<script src="https://gigabyte5671.github.io/AutoType/dist/autotype.min.js" type="text/javascript"></script>
+
+<script>
+    const phrases = ["artworks", "artists", "art styles", "locations"];
+    let currentPhrase = 0;
+    let currentChar = 0;
+    let input = document.getElementById('search-input');
+
+    function typeEffect() {
+        if (currentChar < phrases[currentPhrase].length) {
+            input.placeholder += phrases[currentPhrase].charAt(currentChar);
+            currentChar++;
+            setTimeout(typeEffect, 200);
+        } else {
+            setTimeout(eraseEffect, 2000);
+        }
+    }
+
+    function eraseEffect() {
+        if (currentChar > 0) {
+            input.placeholder = input.placeholder.substring(0, input.placeholder.length - 1);
+            currentChar--;
+            setTimeout(eraseEffect, 100);
+        } else {
+            currentPhrase++;
+            if (currentPhrase >= phrases.length) currentPhrase = 0;
+            setTimeout(typeEffect, 200);
+        }
+    }
+
+    setTimeout(typeEffect, 2000);
+</script>
+
 
 <!-- DAVOU - ADDED JQUERY AND JS FILE LINKS -->
 <!-- jQuery JS -->
