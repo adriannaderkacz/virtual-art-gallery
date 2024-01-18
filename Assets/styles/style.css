@@ -5,6 +5,13 @@
     box-sizing: border-box;
 }
 
+.home-page {
+    background-image: url('../images/gallery.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
 .home-section {
     height: 100vh;
     display: flex;
@@ -47,6 +54,7 @@ h2 {
     border: none;
     outline: none;
     font-size: 18px;
+    color: #777;
     padding-left: 10px;
 }
 
