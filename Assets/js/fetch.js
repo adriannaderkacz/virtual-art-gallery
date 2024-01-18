@@ -5,7 +5,7 @@
  * CONTRIBUTIONS: AHMED IBRAHIM
  * 
  **/
-const userSearch = $("#search-input")
+const userSearch = $("#search")
 const userBtn = $("#search-button")
 const harvardKey = "etticens"
 let results = []
@@ -54,6 +54,7 @@ function tempStoreData(data){
 }
 
 userBtn.on("click", function(e){
+    console.log('test')
     e.preventDefault()
     fetchingAPI()
 })
