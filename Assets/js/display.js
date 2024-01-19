@@ -28,27 +28,27 @@ function fetchingAPI() {
             return response.json()
         }).then(function (europeanaData) {
             fetch(harvardURL)
-            .then(function (response) {
-                return response.json()
-            })
-            .then(function (harvardData) {
-                
-                tempStoreData(europeanaData, harvardData)
-            })
-            .then(function () {
-                displayData()
-            }
-            )
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (harvardData) {
+
+                    tempStoreData(europeanaData, harvardData)
+                })
+                .then(function () {
+                    displayData()
+                }
+                )
 
         })
-        // fetch(harvardURL)
-        //         .then(function (response) {
-        //             return response.json()
-        //         })
-        //         .then(function (harvardData) {
-                    
-        //             tempStoreData(europeanaData, harvardData)
-        //         })
+    // fetch(harvardURL)
+    //         .then(function (response) {
+    //             return response.json()
+    //         })
+    //         .then(function (harvardData) {
+
+    //             tempStoreData(europeanaData, harvardData)
+    //         })
 
     // fetch(europeanaQuery)
     // .then(function (response) {
@@ -57,7 +57,7 @@ function fetchingAPI() {
     // .then(function (europeanaData) {
     //     tempStoreData(europeanaData);
 
-    
+
     //     return fetch(harvardURL);
     // })
     // .then(function (response) {
@@ -69,33 +69,33 @@ function fetchingAPI() {
     // .then(function () {
     //     displayData();
     // })
-   
-    
-        // .then(function () {
-        //     displayData()
-        // }
-        // )
 
-        // fetch(europeanaQuery)
-        // .then(function (response) {
-        //     return response.json();
-        // })
-        // .then(function (europeanaData) {
-        //     tempStoreData(europeanaData);
 
-        
-        //     return fetch(harvardURL);
-        // })
-        // .then(function (response) {
-        //     return response.json();
-        // })
-        // .then(function (harvardData) {
-        //     tempStoreData(harvardData);
+    // .then(function () {
+    //     displayData()
+    // }
+    // )
 
-      
-        //     displayData();
-        // })
-        //
+    // fetch(europeanaQuery)
+    // .then(function (response) {
+    //     return response.json();
+    // })
+    // .then(function (europeanaData) {
+    //     tempStoreData(europeanaData);
+
+
+    //     return fetch(harvardURL);
+    // })
+    // .then(function (response) {
+    //     return response.json();
+    // })
+    // .then(function (harvardData) {
+    //     tempStoreData(harvardData);
+
+
+    //     displayData();
+    // })
+    //
 
     // fetch(harvardURL)
 
@@ -119,13 +119,14 @@ function tempStoreData(europeanaData, harvardData) {
 
 
 
-        if (europeanaData.apikey) {
-            for (let i = 0; i < europeanaData.items.length; i++) {
-                let creator = ""
-                let img = ""
-                let tit = ""
-                let prov = ""
-            
+    console.log(harvardData.records.length)
+    if (europeanaData.apikey) {
+        for (let i = 0; i < europeanaData.items.length; i++) {
+            let creator = ""
+            let img = ""
+            let tit = ""
+            let prov = ""
+
             prov = europeanaData.items[i].provider[0]
             tit = europeanaData.items[i].title[0]
             try {
@@ -146,112 +147,91 @@ function tempStoreData(europeanaData, harvardData) {
                 artist: creator,
                 provider: prov,
                 image: img
-    
+
             }
         }
-        }
-        else {
-                
-            for (let i = 0; i < harvardData.records.length; i++) {
-                let creator = ""
-                let img = ""
-                let tit = ""
-                let prov = ""
-                
-            try {
-                prov = harvardData.records[i].creditline
-            } catch (error){
-                provider = "Unknown"
-            }
-            try {
-                tit = harvardData.records[i].title
-            } catch (error){
-                tit = "Unknown"
-            }
-            try {
-                creator = harvardData.records[i].persons[0].alphasort
-            } catch (error){
-                creator = "Unknown"
-            }
-            try {
-                img = harvardData.records[i].images[0].baseimageurl
-            } catch (onerror) {
-                img = "./Assets/images/searchImgPlaceholder.jpeg"
-            }
-            img.onerror = function () {
-                img = "./Assets/images/searchImgPlaceholder.jpeg"
-            }
+    }
+    if (harvardData.records) {
+
+        for (let i = 0; i < harvardData.records.length; i++) {
             
+            let creator = ""
+            let img = ""
+            let tit = ""
+            let prov = ""
+
+            prov = harvardData.records[i].creditline
+            tit = harvardData.records[i].title
+            if (harvardData.records[i].people.length > 0) {
+                creator = harvardData.records[i].people[0].alphasort
+            }
+            else {
+                creator = "unkown"
+            }
+            if (harvardData.records[i].images > 0) {
+                img = harvardData.records[i].images[0].baseimageurl
+            }
+            else{
+                img = "./Assets/images/searchImgPlaceholder.jpeg"
+            }
+
 
             harvardResults[i] = {
                 title: tit,
                 artist: creator,
                 provider: prov,
                 image: img
-    
+
             }
-            }
-        
+        }
+  
         }
 
-//results[0]... results[1]...results[2]...
-        // results[i] = {
-        //     title: tit,
-        //     artist: creator,
-        //     provider: prov,
-        //     image: img
+        
+        results = harvardResults.concat(europeanaResults)
+        console.log(results)
+        return results
 
-        // }
-    
-   
-
-    results = harvardResults.concat(europeanaResults)
-    console.log(harvardResults)
-    console.log(europeanaResults)
-    console.log(results)
-// console.log(results)
-    return results
-    
-}
-
-// displayData()
-/**
- * 
- * FUNCTION FOR DISPLAYING THE ARRAY OF ART PEICES..
- * AND THEIR INFORMATION
- * 
- **/
-function displayData() {
-
-    for (let i = 0; i < results.length; i++) {
-        console.log("tests")
-        $("img").eq(i).attr("src", results[i].image)
-        $("p").eq(i).text("Name: " + results[i].title + " Artist: " + results[i].artist)
     }
 
-}
+    // displayData()
+    /**
+     * 
+     * FUNCTION FOR DISPLAYING THE ARRAY OF ART PEICES..
+     * AND THEIR INFORMATION
+     * 
+     **/
+    function displayData() {
 
-$(document).ready(function () {
+        for (let i = 0; i < results.length; i++) {
+
+            $("img").eq(i).attr("src", results[i].image)
+            $("p").eq(i).text("Name: " + results[i].title + " Artist: " + results[i].artist)
+        }
+
+    }
+
+    $(document).ready(function () {
 
 
-    console.log(europeanaKey)
+        console.log(europeanaKey)
 
-    fetchingAPI()
-
-
-})
-userSearch2.on("keypress", function (e) {
-
-    localStorage.setItem("search", JSON.stringify(userSearch2.val()))
-    var key = e.which;
-    if (key == 13)  // the enter key code
-    {
         fetchingAPI()
 
 
+    })
+    userSearch2.on("keypress", function (e) {
 
-    }
+        localStorage.setItem("search", JSON.stringify(userSearch2.val()))
+        var key = e.which;
+        if (key == 13)  // the enter key code
+        {
+            fetchingAPI()
 
 
-})
+
+        }
+
+
+    })
 
