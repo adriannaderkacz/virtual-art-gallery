@@ -24,18 +24,18 @@ function fetchingAPI() {
     fetch(europeanaQuery)
         .then(function (response) {
             return response.json()
-        }).then(function (data) {
-            console.log(data)
-            temp = tempStoreData(data)
+        }).then(function (europeanaData) {
+            console.log(europeanaData)
+            temp = tempStoreData(europeanaData)
             return temp
         })
-        .then(function (temp) {
+        .then(function () {
             fetch(harvardURL)
                 .then(function (response) {
-                    response.json()
+                    return response.json()
                 })
-                .then(function (data) {
-
+                .then(function (harvardData) {
+                    tempStoreData(harvardData)
                 })
         })
         .then(function (temp) {
@@ -54,24 +54,29 @@ function fetchingAPI() {
  * FUNCTION FOR TEMPORARILY STORING THE RESULTS OF THE..
  * API FETCH TO DISPLAY ON SCREEN
  * 
+ * 
+ * (ahmed notes) need to make sure that the data.items.length in the for loop returns the length of both data sets
+ * find a way to add it into the array rather than overriding
+ * 
  **/
-function tempStoreData(data) {
-    for (let i = 0; i < data.items.length; i++) {
+function tempStoreData(europeanaData, harvardData) {
+    for (let i = 0; i < europeanaData.items.length; i++) {
         let creator = ""
         let img = ""
         let tit = ""
         let prov = ""
 
-        if (data.items.apikey) {
-            prov = data.items[i].provider[0]
-            tit = data.items[i].title[0]
+
+        if (europeanaData.apikey) {
+            prov = europeanaData.items[i].provider[0]
+            tit = europeanaData.items[i].title[0]
             try {
-                creator = data.items[i].dcCreator[0]
+                creator = europeanaData.items[i].dcCreator[0]
             } catch (error) {
                 creator = "Unknown"
             }
             try {
-                img = data.items[i].edmIsShownBy[0]
+                img = europeanaData.items[i].edmIsShownBy[0]
             } catch (onerror) {
                 img = "./Assets/images/searchImgPlaceholder.jpeg"
             }
@@ -79,14 +84,14 @@ function tempStoreData(data) {
                 img = "./Assets/images/searchImgPlaceholder.jpeg"
             }
         }
-        else {
-            prov = data.records[i].creditline
-            tit = data.records[i].title
-            creator = data.records[i].persons[0].alphasort
-            img = data.records[i].images[0].baseimageurl
-        }
+        // else {
+        //     prov = data.records[i].creditline
+        //     tit = data.records[i].title
+        //     creator = data.records[i].persons[0].alphasort
+        //     img = data.records[i].images[0].baseimageurl
+        // }
 
-
+//results[0]... results[1]...results[2]...
         results[i] = {
             title: tit,
             artist: creator,
@@ -126,7 +131,7 @@ $(document).ready(function () {
 
 
 })
-userSearch.on("keypress", function (e) {
+userSearch2.on("keypress", function (e) {
 
     localStorage.setItem("search", JSON.stringify(userSearch2.val()))
     var key = e.which;
