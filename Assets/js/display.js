@@ -158,11 +158,30 @@ function tempStoreData(europeanaData, harvardData) {
                 let tit = ""
                 let prov = ""
                 
+            try {
+                prov = harvardData.records[i].creditline
+            } catch (error){
+                provider = "Unknown"
+            }
+            try {
+                tit = harvardData.records[i].title
+            } catch (error){
+                tit = "Unknown"
+            }
+            try {
+                creator = harvardData.records[i].persons[0].alphasort
+            } catch (error){
+                creator = "Unknown"
+            }
+            try {
+                img = harvardData.records[i].images[0].baseimageurl
+            } catch (onerror) {
+                img = "./Assets/images/searchImgPlaceholder.jpeg"
+            }
+            img.onerror = function () {
+                img = "./Assets/images/searchImgPlaceholder.jpeg"
+            }
             
-            prov = harvardData.records[i].creditline
-            tit = harvardData.records[i].title
-            creator = harvardData.records[i].persons[0].alphasort
-            img = harvardData.records[i].images[0].baseimageurl
 
             harvardResults[i] = {
                 title: tit,
@@ -184,11 +203,13 @@ function tempStoreData(europeanaData, harvardData) {
 
         // }
     
-    // console.log(results)
-    console.log(europeanaResults)
-    console.log(harvardResults)
+   
+
     results = harvardResults.concat(europeanaResults)
-console.log(results)
+    console.log(harvardResults)
+    console.log(europeanaResults)
+    console.log(results)
+// console.log(results)
     return results
     
 }
