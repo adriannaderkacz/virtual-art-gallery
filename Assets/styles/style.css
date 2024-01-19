@@ -183,6 +183,31 @@ h2 {
     opacity: 1;
 }
 
+.bookmark-icon {
+    position: absolute;
+    bottom: 30px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+}
+
+.image-wrap .fa-regular.fa-bookmark {
+    display: none;
+}
+
+.image-wrap:hover .fa-regular.fa-bookmark {
+    display: block;
+}
+
+.image-wrap.marked .fa-solid.fa-bookmark {
+    display: none;
+}
+
+.image-wrap.marked:hover .fa-regular.fa-bookmark {
+    display: block;
+}
+
 .container .more-btn {
     margin: 40px 0 70px 0;
     background: #77777796;
