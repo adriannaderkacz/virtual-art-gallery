@@ -10,6 +10,8 @@ const harvardKey = "3e70e735-7cc4-493f-996e-a220833dd4a9"
 let results = []
 let tempResults
 const userSearch2 = $("#search-input")
+let europeanaResults = []
+let harvardResults = []
 
 /**
  * 
@@ -25,23 +27,75 @@ function fetchingAPI() {
         .then(function (response) {
             return response.json()
         }).then(function (europeanaData) {
-            console.log(europeanaData)
-            temp = tempStoreData(europeanaData)
-            return temp
-        })
-        .then(function () {
             fetch(harvardURL)
-                .then(function (response) {
-                    return response.json()
-                })
-                .then(function (harvardData) {
-                    tempStoreData(harvardData)
-                })
+            .then(function (response) {
+                return response.json()
+            })
+            .then(function (harvardData) {
+                
+                tempStoreData(europeanaData, harvardData)
+            })
+            .then(function () {
+                displayData()
+            }
+            )
+
         })
-        .then(function (temp) {
-            displayData()
-        }
-        )
+        // fetch(harvardURL)
+        //         .then(function (response) {
+        //             return response.json()
+        //         })
+        //         .then(function (harvardData) {
+                    
+        //             tempStoreData(europeanaData, harvardData)
+        //         })
+
+    // fetch(europeanaQuery)
+    // .then(function (response) {
+    //     return response.json();
+    // })
+    // .then(function (europeanaData) {
+    //     tempStoreData(europeanaData);
+
+    
+    //     return fetch(harvardURL);
+    // })
+    // .then(function (response) {
+    //     return response.json();
+    // })
+    // .then(function (harvardData) {
+    //     tempStoreData(harvardData);
+    // })
+    // .then(function () {
+    //     displayData();
+    // })
+   
+    
+        // .then(function () {
+        //     displayData()
+        // }
+        // )
+
+        // fetch(europeanaQuery)
+        // .then(function (response) {
+        //     return response.json();
+        // })
+        // .then(function (europeanaData) {
+        //     tempStoreData(europeanaData);
+
+        
+        //     return fetch(harvardURL);
+        // })
+        // .then(function (response) {
+        //     return response.json();
+        // })
+        // .then(function (harvardData) {
+        //     tempStoreData(harvardData);
+
+      
+        //     displayData();
+        // })
+        //
 
     // fetch(harvardURL)
 
@@ -57,17 +111,21 @@ function fetchingAPI() {
  * 
  * (ahmed notes) need to make sure that the data.items.length in the for loop returns the length of both data sets
  * find a way to add it into the array rather than overriding
+ * then make the array randomise.
+ * then need to figure out how to increase the array size
  * 
  **/
 function tempStoreData(europeanaData, harvardData) {
-    for (let i = 0; i < europeanaData.items.length; i++) {
-        let creator = ""
-        let img = ""
-        let tit = ""
-        let prov = ""
+
 
 
         if (europeanaData.apikey) {
+            for (let i = 0; i < europeanaData.items.length; i++) {
+                let creator = ""
+                let img = ""
+                let tit = ""
+                let prov = ""
+            
             prov = europeanaData.items[i].provider[0]
             tit = europeanaData.items[i].title[0]
             try {
@@ -83,26 +141,56 @@ function tempStoreData(europeanaData, harvardData) {
             img.onerror = function () {
                 img = "./Assets/images/searchImgPlaceholder.jpeg"
             }
+            europeanaResults[i] = {
+                title: tit,
+                artist: creator,
+                provider: prov,
+                image: img
+    
+            }
         }
-        // else {
-        //     prov = data.records[i].creditline
-        //     tit = data.records[i].title
-        //     creator = data.records[i].persons[0].alphasort
-        //     img = data.records[i].images[0].baseimageurl
-        // }
+        }
+        else {
+                
+            for (let i = 0; i < harvardData.records.length; i++) {
+                let creator = ""
+                let img = ""
+                let tit = ""
+                let prov = ""
+                
+            
+            prov = harvardData.records[i].creditline
+            tit = harvardData.records[i].title
+            creator = harvardData.records[i].persons[0].alphasort
+            img = harvardData.records[i].images[0].baseimageurl
+
+            harvardResults[i] = {
+                title: tit,
+                artist: creator,
+                provider: prov,
+                image: img
+    
+            }
+            }
+        
+        }
 
 //results[0]... results[1]...results[2]...
-        results[i] = {
-            title: tit,
-            artist: creator,
-            provider: prov,
-            image: img
+        // results[i] = {
+        //     title: tit,
+        //     artist: creator,
+        //     provider: prov,
+        //     image: img
 
-        }
-    }
+        // }
+    
     // console.log(results)
-
+    console.log(europeanaResults)
+    console.log(harvardResults)
+    results = harvardResults.concat(europeanaResults)
+console.log(results)
     return results
+    
 }
 
 // displayData()
