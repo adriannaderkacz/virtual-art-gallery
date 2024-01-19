@@ -154,7 +154,7 @@ function tempStoreData(europeanaData, harvardData) {
     if (harvardData.records) {
 
         for (let i = 0; i < harvardData.records.length; i++) {
-            
+            console.log(harvardData.records[i])
             let creator = ""
             let img = ""
             let tit = ""
@@ -168,7 +168,7 @@ function tempStoreData(europeanaData, harvardData) {
             else {
                 creator = "unkown"
             }
-            if (harvardData.records[i].images > 0) {
+            if (harvardData.records[i].images && harvardData.records[i].images > 0) {
                 img = harvardData.records[i].images[0].baseimageurl
             }
             else{
@@ -188,7 +188,7 @@ function tempStoreData(europeanaData, harvardData) {
         }
 
         
-        results = harvardResults.concat(europeanaResults)
+        results = harvardResults.concat(europeanaResults).sort(() => Math.random() - 0.5)
         console.log(results)
         return results
 
