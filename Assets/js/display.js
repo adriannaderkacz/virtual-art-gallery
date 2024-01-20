@@ -152,7 +152,7 @@ function tempStoreData(europeanaData, harvardData) {
             if (results[i] && results[i].image !== undefined) {
                 
             $("img").eq(i).attr("src", results[i].image)
-            $("p").eq(i).text("Name: " + results[i].title + " Artist: " + results[i].artist)
+            $(".image-text").text("NAME: " + results[i].title +   " ARTIST: " + results[i].artist)
         }
     }
 
