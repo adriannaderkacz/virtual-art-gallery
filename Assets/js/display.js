@@ -22,7 +22,7 @@ function fetchingAPI() {
     const userInput = JSON.parse(localStorage.getItem("search"))
     console.log(userInput)
     const europeanaQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${europeanaKey}&query=what:("${userInput}")`
-    const harvardURL = `https://api.harvardartmuseums.org/object?apikey=${harvardKey}&title=${userInput}`;
+    const harvardURL = `https://api.harvardartmuseums.org/object?apikey=${harvardKey}&title=${userInput}&collections=paintings&size=100`;
     fetch(europeanaQuery)
         .then(function (response) {
             return response.json()
@@ -41,65 +41,7 @@ function fetchingAPI() {
                 )
 
         })
-    // fetch(harvardURL)
-    //         .then(function (response) {
-    //             return response.json()
-    //         })
-    //         .then(function (harvardData) {
 
-    //             tempStoreData(europeanaData, harvardData)
-    //         })
-
-    // fetch(europeanaQuery)
-    // .then(function (response) {
-    //     return response.json();
-    // })
-    // .then(function (europeanaData) {
-    //     tempStoreData(europeanaData);
-
-
-    //     return fetch(harvardURL);
-    // })
-    // .then(function (response) {
-    //     return response.json();
-    // })
-    // .then(function (harvardData) {
-    //     tempStoreData(harvardData);
-    // })
-    // .then(function () {
-    //     displayData();
-    // })
-
-
-    // .then(function () {
-    //     displayData()
-    // }
-    // )
-
-    // fetch(europeanaQuery)
-    // .then(function (response) {
-    //     return response.json();
-    // })
-    // .then(function (europeanaData) {
-    //     tempStoreData(europeanaData);
-
-
-    //     return fetch(harvardURL);
-    // })
-    // .then(function (response) {
-    //     return response.json();
-    // })
-    // .then(function (harvardData) {
-    //     tempStoreData(harvardData);
-
-
-    //     displayData();
-    // })
-    //
-
-    // fetch(harvardURL)
-
-    // displayData()
 
 }
 
@@ -118,15 +60,14 @@ function fetchingAPI() {
 function tempStoreData(europeanaData, harvardData) {
 
 
-
-    console.log(harvardData.records.length)
     if (europeanaData.apikey) {
         for (let i = 0; i < europeanaData.items.length; i++) {
             let creator = ""
             let img = ""
             let tit = ""
             let prov = ""
-
+                
+            
             prov = europeanaData.items[i].provider[0]
             tit = europeanaData.items[i].title[0]
             try {
@@ -134,14 +75,15 @@ function tempStoreData(europeanaData, harvardData) {
             } catch (error) {
                 creator = "Unknown"
             }
-            try {
+            if (europeanaData.items[i].edmIsShownBy[0]) {
                 img = europeanaData.items[i].edmIsShownBy[0]
-            } catch (onerror) {
-                img = "./Assets/images/searchImgPlaceholder.jpeg"
+            } 
+            // changed the try catch to an if else as that made more sense to me and then spliced if the there was no available image
+            else {
+                 europeanaResults.splice(i, 1);
+                 continue
             }
-            img.onerror = function () {
-                img = "./Assets/images/searchImgPlaceholder.jpeg"
-            }
+            
             europeanaResults[i] = {
                 title: tit,
                 artist: creator,
@@ -150,11 +92,12 @@ function tempStoreData(europeanaData, harvardData) {
 
             }
         }
+        
     }
     if (harvardData.records) {
 
         for (let i = 0; i < harvardData.records.length; i++) {
-            console.log(harvardData.records[i])
+            
             let creator = ""
             let img = ""
             let tit = ""
@@ -168,11 +111,13 @@ function tempStoreData(europeanaData, harvardData) {
             else {
                 creator = "unkown"
             }
-            if (harvardData.records[i].images && harvardData.records[i].images > 0) {
+            if (harvardData.records[i].images && harvardData.records[i].images.length > 0) {
                 img = harvardData.records[i].images[0].baseimageurl
             }
+            // added an else statement for the same purpose as for the europeana data
             else{
-                img = "./Assets/images/searchImgPlaceholder.jpeg"
+                harvardResults.splice(i, 1);
+                continue
             }
 
 
@@ -188,7 +133,7 @@ function tempStoreData(europeanaData, harvardData) {
         }
 
         
-        results = harvardResults.concat(europeanaResults).sort(() => Math.random() - 0.5)
+        results = harvardResults.sort(() => Math.random() - 0.5)
         console.log(results)
         return results
 
@@ -202,12 +147,14 @@ function tempStoreData(europeanaData, harvardData) {
      * 
      **/
     function displayData() {
-
+// added an if statement as the splice was leaving some undefined
         for (let i = 0; i < results.length; i++) {
-
+            if (results[i] && results[i].image !== undefined) {
+                
             $("img").eq(i).attr("src", results[i].image)
             $("p").eq(i).text("Name: " + results[i].title + " Artist: " + results[i].artist)
         }
+    }
 
     }
 
