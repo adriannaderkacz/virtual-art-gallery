@@ -9,7 +9,7 @@ const europeanaKey = "etticens"
 const harvardKey = "3e70e735-7cc4-493f-996e-a220833dd4a9"
 let results = []
 let tempResults
-const userSearch2 = $("#search-input")
+const userSearch2 = $("#collections-search")
 let europeanaResults = []
 let harvardResults = []
 
@@ -75,7 +75,7 @@ function tempStoreData(europeanaData, harvardData) {
             } catch (error) {
                 creator = "Unknown"
             }
-            if (europeanaData.items[i].edmIsShownBy[0]) {
+            if (europeanaData.items[i].edmIsShownBy) {
                 img = europeanaData.items[i].edmIsShownBy[0]
             } 
             // changed the try catch to an if else as that made more sense to me and then spliced if the there was no available image
