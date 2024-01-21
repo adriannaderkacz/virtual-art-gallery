@@ -182,29 +182,29 @@ userSearch2.on("keypress", function (e) {
 
 $(".toSave").on("click", function(){
 // .index(this) finds the index or (position in array) of all the elements with the same class
-var index = $(".toSave").index(this)
+var collectionsIndex = $(".toSave").index(this)
 
 // the condition makes sure that the index exists within the correct range before executing
-if (index >= 0 && index < results.length) {
-    var savedItems = JSON.parse(localStorage.getItem("saved")) || []
+if (collectionsIndex >= 0 && collectionsIndex < results.length) {
+    var storageItems = JSON.parse(localStorage.getItem("saved")) || []
 
 //  .some() runs through the entire array and returns true or false depending on whether everything inside the return is ===
-    var isAlreadySaved = savedItems.some(function(savedItem) {
+    var isAlreadySaved = storageItems.some(function(collectionsSavedItem) {
         return (
-            savedItem.title === results[index].title &&
-            savedItem.artist === results[index].artist &&
-            savedItem.provider === results[index].provider &&
-            savedItem.image === results[index].image
+            collectionsSavedItem.title === results[collectionsIndex].title &&
+            collectionsSavedItem.artist === results[collectionsIndex].artist &&
+            collectionsSavedItem.provider === results[collectionsIndex].provider &&
+            collectionsSavedItem.image === results[collectionsIndex].image
         )
     })
 
 
 if (!isAlreadySaved) {
     
-    savedItems.push(results[index])
+    storageItems.push(results[collectionsIndex])
 
 
-    localStorage.setItem("saved", JSON.stringify(savedItems))
+    localStorage.setItem("saved", JSON.stringify(storageItems))
 }
 }
 
