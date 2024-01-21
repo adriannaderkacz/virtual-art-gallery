@@ -66,8 +66,8 @@ function tempStoreData(europeanaData, harvardData) {
             let img = ""
             let tit = ""
             let prov = ""
-                
-            
+
+
             prov = europeanaData.items[i].provider[0]
             tit = europeanaData.items[i].title[0]
             try {
@@ -77,13 +77,13 @@ function tempStoreData(europeanaData, harvardData) {
             }
             if (europeanaData.items[i].edmIsShownBy) {
                 img = europeanaData.items[i].edmIsShownBy[0]
-            } 
+            }
             // changed the try catch to an if else as that made more sense to me and then spliced if the there was no available image
             else {
-                 europeanaResults.splice(i, 1);
-                 continue
+                europeanaResults.splice(i, 1);
+                continue
             }
-            
+
             europeanaResults[i] = {
                 title: tit,
                 artist: creator,
@@ -92,12 +92,12 @@ function tempStoreData(europeanaData, harvardData) {
 
             }
         }
-        
+
     }
     if (harvardData.records) {
 
         for (let i = 0; i < harvardData.records.length; i++) {
-            
+
             let creator = ""
             let img = ""
             let tit = ""
@@ -115,7 +115,7 @@ function tempStoreData(europeanaData, harvardData) {
                 img = harvardData.records[i].images[0].baseimageurl
             }
             // added an else statement for the same purpose as for the europeana data
-            else{
+            else {
                 harvardResults.splice(i, 1);
                 continue
             }
@@ -129,56 +129,72 @@ function tempStoreData(europeanaData, harvardData) {
 
             }
         }
-  
-        }
-
-        
-        results = harvardResults.sort(() => Math.random() - 0.5)
-        console.log(results)
-        return results
 
     }
 
-    // displayData()
-    /**
-     * 
-     * FUNCTION FOR DISPLAYING THE ARRAY OF ART PEICES..
-     * AND THEIR INFORMATION
-     * 
-     **/
-    function displayData() {
-// added an if statement as the splice was leaving some undefined
-        for (let i = 0; i < results.length; i++) {
-            if (results[i] && results[i].image !== undefined) {
-                
+
+    results = harvardResults.sort(() => Math.random() - 0.5)
+    console.log(results)
+    return results
+
+}
+
+// displayData()
+/**
+ * 
+ * FUNCTION FOR DISPLAYING THE ARRAY OF ART PEICES..
+ * AND THEIR INFORMATION
+ * 
+ **/
+function displayData() {
+    // added an if statement as the splice was leaving some undefined
+    for (let i = 0; i < results.length; i++) {
+        if (results[i] && results[i].image !== undefined) {
+
             $("img").eq(i).attr("src", results[i].image)
-            $(".image-text").text("NAME: " + results[i].title +   " ARTIST: " + results[i].artist)
+            $(".image-text").text("NAME: " + results[i].title + " ARTIST: " + results[i].artist)
         }
     }
 
-    }
+}
 
-    $(document).ready(function () {
+$(document).ready(function () {
 
 
-        console.log(europeanaKey)
+    console.log(europeanaKey)
 
+    fetchingAPI()
+
+
+})
+userSearch2.on("keypress", function (e) {
+
+    localStorage.setItem("search", JSON.stringify(userSearch2.val()))
+    var key = e.which;
+    if (key == 13)  // the enter key code
+    {
         fetchingAPI()
 
 
-    })
-    userSearch2.on("keypress", function (e) {
 
-        localStorage.setItem("search", JSON.stringify(userSearch2.val()))
-        var key = e.which;
-        if (key == 13)  // the enter key code
-        {
-            fetchingAPI()
+    }
+})
+
+$(".toSave").on("click", function(){
+// .index(this) finds the index or (position in array) of all the elements with the same class
+var index = $(".toSave").index(this)
+
+// the condition makes sure that the index exists within the correct range before executing
+if (index >= 0 && index < results.length) {
+    var savedItems = JSON.parse(localStorage.getItem("saved")) || []
+
+
+    savedItems.push(results[index])
+
+
+    localStorage.setItem("saved", JSON.stringify(savedItems))
+}
 
 
 
-        }
-
-
-    })
-
+})
