@@ -48,10 +48,45 @@
             </div>
         </nav>
     </header>
-    <main></main>
+    <main class="galleries">
+        <h3>Choose Your Gallery</h3>
+        <div class="container-galleries">
+            <div class="slider-wrapper">
+                <button id="prev-slide" class="slide-button material-symbols-rounded"><i class="fa-solid fa-chevron-left" style="color: #777;"></i></button>
+                <div class="galleries-list">
+                    <a href="gallery1.html">
+                        <img src="./Assets/images/collections/1.jpg" class="image-item">
+                        <p class="gallery-text">Gallery 1</p>
+                    </a>
+                    <a href="gallery2.html">
+                        <img src="./Assets/images/collections/7.jpg" class="image-item">
+                        <p class="gallery-text">Gallery 2</p>
+                    </a>
+                    <a href="gallery3.html">
+                        <img src="./Assets/images/collections/10.jpg" class="image-item">
+                        <p class="gallery-text">Gallery 3</p>
+                    </a>
+                    <a href="gallery4.html">
+                        <img src="./Assets/images/collections/9.jpg" class="image-item">
+                        <p class="gallery-text">Gallery 4</p>
+                    </a>
+                </div>
+                <button id="next-slide" class="slide-button material-symbols-rounded"><i class="fa-solid fa-chevron-right" style="color: #777;"></i></button>
+            </div>
+            <div class="slider-scrollbar">
+                <div class="scrollbar-track">
+                    <div class="scrollbar-thumb">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
     <footer></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+<!--Adding JS file for the scrollbar function-->
+    <script src="./Assets/js/scrollbar.js"></script>
 
 <!-- DAVOU - ADDED JQUERY AND JS FILE LINKS -->
     <!-- jQuery JS -->
@@ -61,6 +96,6 @@
     <!-- fetch JS -->
     <script src="./assets/js/fetch.js"></script>
     <!-- display JS -->
-    <script src="./assets/js/display.js"></script>
+   <!--<script src="./assets/js/display.js"></script>-->
 </body>
 </html>

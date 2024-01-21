@@ -1,3 +1,9 @@
+/*
+ * 
+ * CODE CREATED BY: ADRIANNA DERKACZ
+ * 
+*/
+
 * {
     margin: 0;
     padding: 0;
@@ -54,6 +60,17 @@ h2 {
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+}
+
+h3 {
+    text-align: center;
+    color: black;
+    font-family: "Cinzel", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    margin-top: 20px;
+    margin-bottom: 40px;
 }
 
 .search-btn {
@@ -127,7 +144,9 @@ h2 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 40px 20px 0 20px;
+    margin: auto;
+    margin-top: 25px;
+
 }
 
 .container .box {
@@ -225,4 +244,170 @@ h2 {
     font-weight: 200;
     font-style: normal;
     font-variation-settings: "wdth" 100;
+}
+
+.image-item {
+    border-radius: 5px;
+}
+
+.slider-wrapper .galleries-list {
+    display: grid;
+    gap: 20px;
+    font-size: 0;
+    margin-bottom: 30px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    grid-template-columns: repeat(10, 1fr);
+}
+
+.slider-wrapper .galleries-list::-webkit-scrollbar {
+    display: none;
+}
+
+.slider-wrapper .galleries-list .image-item {
+    width: 500px;
+    height: 500px;
+    object-fit: cover;
+}
+
+main .galleries {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: white;
+}
+
+.container-galleries {
+    max-width: 1200px;
+    width: 95%;
+    margin: auto;
+}
+
+.galleries-list a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.galleries-list .image-item {
+    filter: grayscale(1);
+    transition: filter 0.3s ease; 
+    cursor: pointer;
+}
+
+.galleries-list .image-item:hover {
+    filter: grayscale(0);
+}
+
+.gallery-text {
+    display: none;
+    text-align: center;
+    color: #777;
+    font-size: 20px;
+    margin-top: 10px;
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+}
+
+.galleries-list a:hover .gallery-text {
+    display: block;
+}
+
+.galleries-list a:hover .image-item {
+    filter: grayscale(0);
+}
+
+.slider-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.slider-wrapper .slide-button {
+    position: absolute;
+    top: 50%;
+    height: 50px;
+    width: 50px;
+    font-size: 2.2rem;
+    cursor: pointer;
+    background: white;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.slider-wrapper .slide-button#prev-slide {
+    left: -20px;
+    display: none;
+}
+
+.slider-wrapper .slide-button#next-slide {
+    right: -20px;
+}
+
+.container-galleries .slider-scrollbar {
+    height: 24px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.slider-scrollbar .scrollbar-track {
+    height: 2px;
+    width: 100%;
+    background: #ccc;
+    position: relative;
+    border-radius: 4px;
+}
+
+.slider-scrollbar:hover .scrollbar-track {
+    height: 4px;
+}
+
+.slider-scrollbar .scrollbar-thumb {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    background: #777;
+    border-radius: inherit;
+    cursor: grab;
+}
+
+.slider-scrollbar .scrollbar-thumb:active {
+    cursor: grabbing;
+    height: 8px;
+    top: -2px;
+}
+
+.slider-scrollbar .scrollbar-thumb::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -10px;
+    bottom: -10px;
+}
+
+/*Styles for mobiles and tablets*/
+@media (max-width: 1023px) {
+    .slider-wrapper .slide-button {
+        display: none!important;
+    }
+
+    .slider-wrapper .galleries-list {
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .slider-wrapper .galleries-list .image-item {
+        width: 280px;
+        height: 380px;
+    }
+
+    .slider-scrollbar .scrollbar-thumb {
+        width: 20%;
+    }
 }
