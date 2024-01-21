@@ -188,12 +188,26 @@ var index = $(".toSave").index(this)
 if (index >= 0 && index < results.length) {
     var savedItems = JSON.parse(localStorage.getItem("saved")) || []
 
+//  .some() runs through the entire array and returns true or false depending on whether everything inside the return is ===
+    var isAlreadySaved = savedItems.some(function(savedItem) {
+        return (
+            savedItem.title === results[index].title &&
+            savedItem.artist === results[index].artist &&
+            savedItem.provider === results[index].provider &&
+            savedItem.image === results[index].image
+        )
+    })
 
+
+if (!isAlreadySaved) {
+    
     savedItems.push(results[index])
 
 
     localStorage.setItem("saved", JSON.stringify(savedItems))
 }
+}
+
 
 
 
