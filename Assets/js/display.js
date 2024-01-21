@@ -69,9 +69,7 @@ function tempStoreData(europeanaData, harvardData) {
             } catch (onerror) {
                 img = "./Assets/images/searchImgPlaceholder.jpeg"
             }
-            europeanaData.items[i].edmPreview[0].onerror = function () {
-                img = "./Assets/images/searchImgPlaceholder.jpeg"
-            }
+            
         }
         else {
             let j = i
@@ -90,7 +88,7 @@ function tempStoreData(europeanaData, harvardData) {
                 } catch (error) {
                     toDisplay = false
                 }
-                if (harvardData.records[j - 100].imagecount === 0 || img === null) {
+                if (img === null) {
                     toDisplay = false
                 }
 
