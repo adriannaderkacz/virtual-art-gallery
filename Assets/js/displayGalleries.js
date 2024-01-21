@@ -4,7 +4,7 @@ let galleriesArray = JSON.parse(localStorage.getItem("saved"))
 
 
 function displayGalleriesData() {
-  // added an if statement as the splice was leaving some undefined
+  
   for (let i = 0; i < galleriesArray.length; i++) {
       if (galleriesArray[i] && galleriesArray[i].image !== undefined) {
 
@@ -17,6 +17,19 @@ function displayGalleriesData() {
 
 
 $(document).ready(function () {
+  displayGalleriesData();
 
-  displayGalleriesData()
-})
+  $(".toUnsave").on("click", function () {
+
+    var galleriesIndex = $(".toUnsave").index(this);
+
+    if (galleriesIndex >= 0 && galleriesIndex < galleriesArray.length) {
+
+      galleriesArray.splice(galleriesIndex, 1);
+
+      localStorage.setItem("saved", JSON.stringify(galleriesArray));
+
+    }
+  });
+});
+
