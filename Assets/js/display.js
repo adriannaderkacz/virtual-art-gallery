@@ -5,44 +5,42 @@
  * CONTRIBUTIONS: AHMED IBRAHIM
  * 
  **/
-const europeanaKey = "etticens"
+const europeanaKey = "radmitermonh"
 const harvardKey = "3e70e735-7cc4-493f-996e-a220833dd4a9"
 let results = []
 let tempResults
-const userSearch2 = $("#collections-search")
-let europeanaResults = []
-let harvardResults = []
+const userSearch2 = $("#search-input")
+const bookmarkIcon = $(".bookmark-icon")
+
+
 
 /**
  * 
  * FUNCTION FOR FETCHING THE QUERIES FROM RELEVANT APIS
  * 
  **/
-function fetchingAPI() {
+async function fetchingAPI() {
     const userInput = JSON.parse(localStorage.getItem("search"))
     console.log(userInput)
-    const europeanaQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${europeanaKey}&query=what:("${userInput}")`
-    const harvardURL = `https://api.harvardartmuseums.org/object?apikey=${harvardKey}&title=${userInput}&collections=paintings&size=100`;
-    fetch(europeanaQuery)
+    const europeanaQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${europeanaKey}&query=what:("${userInput}")&rows=100&theme=art`
+    const harvardURL = `https://api.harvardartmuseums.org/object?apikey=${harvardKey}&title=${userInput}&size=100`;
+
+    europeanaData = await fetch(europeanaQuery)
         .then(function (response) {
             return response.json()
-        }).then(function (europeanaData) {
-            fetch(harvardURL)
-                .then(function (response) {
-                    return response.json()
-                })
-                .then(function (harvardData) {
-
-                    tempStoreData(europeanaData, harvardData)
-                })
-                .then(function () {
-                    displayData()
-                }
-                )
-
         })
 
+    harvardData = await fetch(harvardURL)
+        .then(function (response) {
+            return response.json()
+        })
 
+    console.log(harvardData)
+    console.log(europeanaData)
+
+    tempStoreData(europeanaData, harvardData)
+
+    displayData()
 }
 
 /**
@@ -59,81 +57,87 @@ function fetchingAPI() {
  **/
 function tempStoreData(europeanaData, harvardData) {
 
+    for (let i = 0; i < (europeanaData.items.length + harvardData.records.length); i++) {
+        let creator = ""
+        let img = ""
+        let tit = ""
+        let prov = ""
+        let from = ""
 
-    if (europeanaData.apikey) {
-        for (let i = 0; i < europeanaData.items.length; i++) {
-            let creator = ""
-            let img = ""
-            let tit = ""
-            let prov = ""
-
-
-            prov = europeanaData.items[i].provider[0]
+        if (i < europeanaData.items.length) {
+            prov = europeanaData.items[i].dataProvider[0]
             tit = europeanaData.items[i].title[0]
+            from = "Europeana"
             try {
                 creator = europeanaData.items[i].dcCreator[0]
             } catch (error) {
                 creator = "Unknown"
             }
-            if (europeanaData.items[i].edmIsShownBy) {
-                img = europeanaData.items[i].edmIsShownBy[0]
-            }
-            // changed the try catch to an if else as that made more sense to me and then spliced if the there was no available image
-            else {
-                europeanaResults.splice(i, 1);
-                continue
+            try {
+                img = europeanaData.items[i].edmPreview[0]
+            } catch (onerror) {
+                img = "./Assets/images/searchImgPlaceholder.jpeg"
             }
 
-            europeanaResults[i] = {
+        }
+        else {
+            let j = i
+            let toDisplay = false
+            from = "Harvard"
+            while (toDisplay === false) {
+                try {
+                    img = harvardData.records[j - 100].images[0].baseimageurl
+                    toDisplay = true
+                } catch (error) {
+                    toDisplay = false
+                }
+                try {
+                    img = harvardData.records[j - 100].primaryimageurl
+                    toDisplay = true
+                } catch (error) {
+                    toDisplay = false
+                }
+                if (img === null || img === undefined) {
+                    toDisplay = false
+                }
+
+
+
+                j++
+
+            }
+            try {
+                prov = harvardData.records[j - 100].creditline
+            } catch (error) {
+                prov = "Unknown"
+            }
+            try {
+                tit = harvardData.records[j - 100].title
+            } catch (error) {
+                prov = "Unknown"
+            }
+            try {
+                creator = harvardData.records[j - 100].people[0].alphasort
+            } catch (error) {
+                creator = "Unknown"
+            }
+        }
+
+        try {
+            results.find(tit)
+        } catch (error) {
+            results[i] = {
+                api: from,
                 title: tit,
                 artist: creator,
                 provider: prov,
                 image: img
-
             }
         }
 
-    }
-    if (harvardData.records) {
-
-        for (let i = 0; i < harvardData.records.length; i++) {
-
-            let creator = ""
-            let img = ""
-            let tit = ""
-            let prov = ""
-
-            prov = harvardData.records[i].creditline
-            tit = harvardData.records[i].title
-            if (harvardData.records[i].people.length > 0) {
-                creator = harvardData.records[i].people[0].alphasort
-            }
-            else {
-                creator = "unkown"
-            }
-            if (harvardData.records[i].images && harvardData.records[i].images.length > 0) {
-                img = harvardData.records[i].images[0].baseimageurl
-            }
-            // added an else statement for the same purpose as for the europeana data
-            else {
-                harvardResults.splice(i, 1);
-                continue
-            }
-
-
-            harvardResults[i] = {
-                title: tit,
-                artist: creator,
-                provider: prov,
-                image: img
-
-            }
-        }
 
     }
-
-
-    results = harvardResults.sort(() => Math.random() - 0.5)
+    results.sort(() => Math.random() - 0.5)
     console.log(results)
     return results
 
@@ -147,68 +151,76 @@ function tempStoreData(europeanaData, harvardData) {
  * 
  **/
 function displayData() {
-    // added an if statement as the splice was leaving some undefined
-    for (let i = 0; i < results.length; i++) {
-        if (results[i] && results[i].image !== undefined) {
 
-            $("img").eq(i).attr("src", results[i].image)
-            $(".image-text").text("NAME: " + results[i].title + " ARTIST: " + results[i].artist)
-        }
+    for (let i = 0; i < results.length; i++) {
+        $("img").eq(i).attr("src", results[i].image)
+        $("p").eq(i).text("Name: " + results[i].title + " Artist: " + results[i].artist)
     }
 
 }
 
 $(document).ready(function () {
 
-
-    console.log(europeanaKey)
-
+    fetchingAPI()
     fetchingAPI()
 
-
 })
-userSearch2.on("keypress", function (e) {
 
+userSearch2.on("keypress", function (e) {
+    console.log("test")
     localStorage.setItem("search", JSON.stringify(userSearch2.val()))
     var key = e.which;
     if (key == 13)  // the enter key code
+    if (key == 13)  // the enter key code
     {
         fetchingAPI()
+    }
+
+})
 
 
+bookmarkIcon.on("click", function () {
+    
+    
+    //highlight bookmark icon if selected
+    // if ($(this).find("fa-regular fa-bookmark bookmark-icon")) {
+        
+        
+    // }
+    
+
+
+    // .index(this) finds the index or (position in array) of all the elements with the same class
+    var collectionsIndex = bookmarkIcon.index(this)
+
+    // the condition makes sure that the index exists within the correct range before executing
+    if (collectionsIndex >= 0 && collectionsIndex < results.length) {
+        var storageItems = JSON.parse(localStorage.getItem("saved")) || []
+
+        //  .some() runs through the entire array and returns true or false depending on whether everything inside the return is ===
+        var isAlreadySaved = storageItems.some(function (collectionsSavedItem) {
+            return (
+                collectionsSavedItem.title === results[collectionsIndex].title &&
+                collectionsSavedItem.artist === results[collectionsIndex].artist &&
+                collectionsSavedItem.provider === results[collectionsIndex].provider &&
+                collectionsSavedItem.image === results[collectionsIndex].image
+            )
+        })
+
+        if (!isAlreadySaved) {
+            $(this).attr("class", "fa-solid fa-bookmark bookmark-icon solid")
+            storageItems.push(results[collectionsIndex])
+            localStorage.setItem("saved", JSON.stringify(storageItems))
+        }
+        //removes saved item and deselects bookmark if user clicks highlighted bookmark
+        else if(isAlreadySaved){
+            $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
+            storageItems.pop()
+            localStorage.setItem("saved", JSON.stringify(storageItems))
+        }
 
     }
-})
 
-$(".toSave").on("click", function(){
-// .index(this) finds the index or (position in array) of all the elements with the same class
-var collectionsIndex = $(".toSave").index(this)
 
-// the condition makes sure that the index exists within the correct range before executing
-if (collectionsIndex >= 0 && collectionsIndex < results.length) {
-    var storageItems = JSON.parse(localStorage.getItem("saved")) || []
 
-//  .some() runs through the entire array and returns true or false depending on whether everything inside the return is ===
-    var isAlreadySaved = storageItems.some(function(collectionsSavedItem) {
-        return (
-            collectionsSavedItem.title === results[collectionsIndex].title &&
-            collectionsSavedItem.artist === results[collectionsIndex].artist &&
-            collectionsSavedItem.provider === results[collectionsIndex].provider &&
-            collectionsSavedItem.image === results[collectionsIndex].image
-        )
     })
-
-
-if (!isAlreadySaved) {
-    
-    storageItems.push(results[collectionsIndex])
-
-
-    localStorage.setItem("saved", JSON.stringify(storageItems))
-}
-}
-
-
-
-
-})
