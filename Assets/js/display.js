@@ -5,29 +5,44 @@
  * CONTRIBUTIONS: AHMED IBRAHIM
  * 
  **/
-const harvardKey = "etticens"
+const europeanaKey = "etticens"
+const harvardKey = "3e70e735-7cc4-493f-996e-a220833dd4a9"
 let results = []
 let tempResults
-const userSearch2 = $("#search-input")
+const userSearch2 = $("#collections-search")
+let europeanaResults = []
+let harvardResults = []
 
 /**
  * 
  * FUNCTION FOR FETCHING THE QUERIES FROM RELEVANT APIS
  * 
  **/
-function fetchingAPI(){
+function fetchingAPI() {
     const userInput = JSON.parse(localStorage.getItem("search"))
     console.log(userInput)
-    const harvardQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${harvardKey}&query=what:("${userInput}")`
-    return fetch(harvardQuery)
-    .then(function(response){
-        return response.json()
-    }).then(function(data){
-        console.log(data)
-        temp = tempStoreData(data)
-        return temp
-    })
-    
+    const europeanaQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${europeanaKey}&query=what:("${userInput}")`
+    const harvardURL = `https://api.harvardartmuseums.org/object?apikey=${harvardKey}&title=${userInput}&collections=paintings&size=100`;
+    fetch(europeanaQuery)
+        .then(function (response) {
+            return response.json()
+        }).then(function (europeanaData) {
+            fetch(harvardURL)
+                .then(function (response) {
+                    return response.json()
+                })
+                .then(function (harvardData) {
+
+                    tempStoreData(europeanaData, harvardData)
+                })
+                .then(function () {
+                    displayData()
+                }
+                )
+
+        })
+
+
 }
 
 /**
@@ -35,80 +50,165 @@ function fetchingAPI(){
  * FUNCTION FOR TEMPORARILY STORING THE RESULTS OF THE..
  * API FETCH TO DISPLAY ON SCREEN
  * 
+ * 
+ * (ahmed notes) need to make sure that the data.items.length in the for loop returns the length of both data sets
+ * find a way to add it into the array rather than overriding
+ * then make the array randomise.
+ * then need to figure out how to increase the array size
+ * 
  **/
-function tempStoreData(data){
-    for(let i=0;i<data.items.length;i++){
-        let creator = ""
-        let img = ""
+function tempStoreData(europeanaData, harvardData) {
 
-        try {
-            creator = data.items[i].dcCreator[0]
-        } catch (error) {
-            creator = "Unknown"
+
+    if (europeanaData.apikey) {
+        for (let i = 0; i < europeanaData.items.length; i++) {
+            let creator = ""
+            let img = ""
+            let tit = ""
+            let prov = ""
+
+
+            prov = europeanaData.items[i].provider[0]
+            tit = europeanaData.items[i].title[0]
+            try {
+                creator = europeanaData.items[i].dcCreator[0]
+            } catch (error) {
+                creator = "Unknown"
+            }
+            if (europeanaData.items[i].edmIsShownBy) {
+                img = europeanaData.items[i].edmIsShownBy[0]
+            }
+            // changed the try catch to an if else as that made more sense to me and then spliced if the there was no available image
+            else {
+                europeanaResults.splice(i, 1);
+                continue
+            }
+
+            europeanaResults[i] = {
+                title: tit,
+                artist: creator,
+                provider: prov,
+                image: img
+
+            }
         }
-        try {
-            img = data.items[i].edmIsShownBy[0]
-        } catch (onerror) {
-            img = "./Assets/images/searchImgPlaceholder.jpeg"
-        }
-        img.onerror = function(){
-            img = "./Assets/images/searchImgPlaceholder.jpeg"
-        }
-        results[i] = { 
-            title: data.items[i].title[0],
-            artist: creator,
-            provider: data.items[i].provider[0],
-            image: img
-        }
+
     }
-    console.log(results)
+    if (harvardData.records) {
 
+        for (let i = 0; i < harvardData.records.length; i++) {
+
+            let creator = ""
+            let img = ""
+            let tit = ""
+            let prov = ""
+
+            prov = harvardData.records[i].creditline
+            tit = harvardData.records[i].title
+            if (harvardData.records[i].people.length > 0) {
+                creator = harvardData.records[i].people[0].alphasort
+            }
+            else {
+                creator = "unkown"
+            }
+            if (harvardData.records[i].images && harvardData.records[i].images.length > 0) {
+                img = harvardData.records[i].images[0].baseimageurl
+            }
+            // added an else statement for the same purpose as for the europeana data
+            else {
+                harvardResults.splice(i, 1);
+                continue
+            }
+
+
+            harvardResults[i] = {
+                title: tit,
+                artist: creator,
+                provider: prov,
+                image: img
+
+            }
+        }
+
+    }
+
+
+    results = harvardResults.sort(() => Math.random() - 0.5)
+    console.log(results)
     return results
+
 }
 
-displayData()
-    /**
-     * 
-     * FUNCTION FOR DISPLAYING THE ARRAY OF ART PEICES..
-     * AND THEIR INFORMATION
-     * 
-     **/
-    function displayData(){
-    
-        for(let i=0;i<results.length;i++){
-            
+// displayData()
+/**
+ * 
+ * FUNCTION FOR DISPLAYING THE ARRAY OF ART PEICES..
+ * AND THEIR INFORMATION
+ * 
+ **/
+function displayData() {
+    // added an if statement as the splice was leaving some undefined
+    for (let i = 0; i < results.length; i++) {
+        if (results[i] && results[i].image !== undefined) {
+
             $("img").eq(i).attr("src", results[i].image)
-            $("p").eq(i).text("Name: " + results[i].title + " Artist: " + results[i].artist)
+            $(".image-text").text("NAME: " + results[i].title + " ARTIST: " + results[i].artist)
         }
-    
     }
 
-$(document).ready(function(){
-    
-    
-    console.log(harvardKey)
+}
 
-    tempResults = fetchingAPI()
+$(document).ready(function () {
 
-    tempResults.then(function test(result){
-        displayData()
-    })
-    
+
+    console.log(europeanaKey)
+
+    fetchingAPI()
+
+
 })
-userSearch.on("keypress", function(e){
-    
+userSearch2.on("keypress", function (e) {
+
     localStorage.setItem("search", JSON.stringify(userSearch2.val()))
     var key = e.which;
-    if(key == 13)  // the enter key code
+    if (key == 13)  // the enter key code
     {
-        tempResults = fetchingAPI()
+        fetchingAPI()
 
-        tempResults.then(function test(result){
-            displayData()
-        })
-        
+
+
     }
-    
-    
 })
 
+$(".toSave").on("click", function(){
+// .index(this) finds the index or (position in array) of all the elements with the same class
+var collectionsIndex = $(".toSave").index(this)
+
+// the condition makes sure that the index exists within the correct range before executing
+if (collectionsIndex >= 0 && collectionsIndex < results.length) {
+    var storageItems = JSON.parse(localStorage.getItem("saved")) || []
+
+//  .some() runs through the entire array and returns true or false depending on whether everything inside the return is ===
+    var isAlreadySaved = storageItems.some(function(collectionsSavedItem) {
+        return (
+            collectionsSavedItem.title === results[collectionsIndex].title &&
+            collectionsSavedItem.artist === results[collectionsIndex].artist &&
+            collectionsSavedItem.provider === results[collectionsIndex].provider &&
+            collectionsSavedItem.image === results[collectionsIndex].image
+        )
+    })
+
+
+if (!isAlreadySaved) {
+    
+    storageItems.push(results[collectionsIndex])
+
+
+    localStorage.setItem("saved", JSON.stringify(storageItems))
+}
+}
+
+
+
+
+})
