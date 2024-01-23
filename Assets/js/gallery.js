@@ -13,12 +13,10 @@ function dislpaySaved(){
     
     for (let i = 0; i < galleriesArray.length; i++){
         console.log("test")
-        $("#photo").append(`<div class="image-wrap">
-        <img src="${galleriesArray[i].image}">
-        <p class="image-text">${galleriesArray[i].title}</p>
-        <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-        <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-        </div>`)
+        $(".photo").append(`<div class="image-wrap">
+                        <img src="${galleriesArray[i].image}">
+                        <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
+                        </div>`)
     }
 }
 
