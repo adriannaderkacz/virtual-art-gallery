@@ -48,6 +48,12 @@ async function fetchingAPI() {
  * FUNCTION FOR TEMPORARILY STORING THE RESULTS OF THE..
  * API FETCH TO DISPLAY ON SCREEN
  * 
+ * 
+ * (ahmed notes) need to make sure that the data.items.length in the for loop returns the length of both data sets
+ * find a way to add it into the array rather than overriding
+ * then make the array randomise.
+ * then need to figure out how to increase the array size
+ * 
  **/
 function tempStoreData(europeanaData, harvardData) {
 
@@ -129,11 +135,12 @@ function tempStoreData(europeanaData, harvardData) {
             }
         }
 
+
     }
     results.sort(() => Math.random() - 0.5)
     console.log(results)
-
     return results
+
 }
 
 // displayData()
@@ -155,6 +162,7 @@ function displayData() {
 $(document).ready(function () {
 
     fetchingAPI()
+    fetchingAPI()
 
 })
 
@@ -162,6 +170,7 @@ userSearch2.on("keypress", function (e) {
     console.log("test")
     localStorage.setItem("search", JSON.stringify(userSearch2.val()))
     var key = e.which;
+    if (key == 13)  // the enter key code
     if (key == 13)  // the enter key code
     {
         fetchingAPI()
