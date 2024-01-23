@@ -10,6 +10,9 @@ const harvardKey = "3e70e735-7cc4-493f-996e-a220833dd4a9"
 let results = []
 let tempResults
 const userSearch2 = $("#search-input")
+const bookmarkIcon = $(".bookmark-icon")
+
+
 
 /**
  * 
@@ -19,7 +22,7 @@ const userSearch2 = $("#search-input")
 async function fetchingAPI() {
     const userInput = JSON.parse(localStorage.getItem("search"))
     console.log(userInput)
-    const europeanaQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${europeanaKey}&query=what:("${userInput}")&rows=100&theme=art&thumbnail`
+    const europeanaQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${europeanaKey}&query=what:("${userInput}")&rows=100&theme=art`
     const harvardURL = `https://api.harvardartmuseums.org/object?apikey=${harvardKey}&title=${userInput}&size=100`;
 
     europeanaData = await fetch(europeanaQuery)
@@ -69,7 +72,7 @@ function tempStoreData(europeanaData, harvardData) {
             } catch (onerror) {
                 img = "./Assets/images/searchImgPlaceholder.jpeg"
             }
-            
+
         }
         else {
             let j = i
@@ -88,9 +91,10 @@ function tempStoreData(europeanaData, harvardData) {
                 } catch (error) {
                     toDisplay = false
                 }
-                if (img === null) {
+                if (img === null || img === undefined) {
                     toDisplay = false
                 }
+
 
 
                 j++
@@ -113,13 +117,18 @@ function tempStoreData(europeanaData, harvardData) {
             }
         }
 
-        results[i] = {
-            api: from,
-            title: tit,
-            artist: creator,
-            provider: prov,
-            image: img
+        try {
+            results.find(tit)
+        } catch (error) {
+            results[i] = {
+                api: from,
+                title: tit,
+                artist: creator,
+                provider: prov,
+                image: img
+            }
         }
+
     }
     results.sort(() => Math.random() - 0.5)
     console.log(results)
@@ -145,24 +154,65 @@ function displayData() {
 
 $(document).ready(function () {
 
-
-    console.log(europeanaKey)
-
     fetchingAPI()
-
 
 })
 
-userSearch.on("keypress", function (e) {
-
+userSearch2.on("keypress", function (e) {
+    console.log("test")
     localStorage.setItem("search", JSON.stringify(userSearch2.val()))
     var key = e.which;
     if (key == 13)  // the enter key code
     {
         fetchingAPI()
+    }
 
+})
+
+
+bookmarkIcon.on("click", function () {
+    
+    console.log($(this).attr("class"))
+
+    //highlight bookmark icon if selected
+    if ($(this).attr("class") === $(this).attr("fa-regular fa-bookmark bookmark-icon")) {
+
+        $(this).attr("class", "fa-solid fa-bookmark bookmark-icon solid")
+    }
+    
+
+
+    // .index(this) finds the index or (position in array) of all the elements with the same class
+    var collectionsIndex = bookmarkIcon.index(this)
+
+    // the condition makes sure that the index exists within the correct range before executing
+    if (collectionsIndex >= 0 && collectionsIndex < results.length) {
+        var storageItems = JSON.parse(localStorage.getItem("saved")) || []
+
+        //  .some() runs through the entire array and returns true or false depending on whether everything inside the return is ===
+        var isAlreadySaved = storageItems.some(function (collectionsSavedItem) {
+            return (
+                collectionsSavedItem.title === results[collectionsIndex].title &&
+                collectionsSavedItem.artist === results[collectionsIndex].artist &&
+                collectionsSavedItem.provider === results[collectionsIndex].provider &&
+                collectionsSavedItem.image === results[collectionsIndex].image
+            )
+        })
+
+        if (!isAlreadySaved) {
+
+            storageItems.push(results[collectionsIndex])
+            localStorage.setItem("saved", JSON.stringify(storageItems))
+        }
+        //removes saved item and deselects bookmark if user clicks highlighted bookmark
+        else if(isAlreadySaved){
+            $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
+            storageItems.pop()
+            localStorage.setItem("saved", JSON.stringify(storageItems))
+        }
 
     }
 
 
-})
+
+    })
