@@ -70,6 +70,17 @@ h3 {
     font-weight: 400;
     font-style: normal;
     margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+h4 {
+    text-align: center;
+    color: black;
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+    margin-top: 20px;
     margin-bottom: 40px;
 }
 
@@ -144,42 +155,44 @@ h3 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: auto;
+    width: 100%;
+    padding: 0;
+    margin: 0 auto;
     margin-top: 25px;
-
 }
 
-.container .box {
+.container .row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.container .box .photo {
+.container .row .col-md-4 {
     display: flex;
     flex-direction: column;
     width: 32.5%;
 }
 
-.container .box .photo .image-wrap {
+.container .row .col-md-4 .image-wrap {
     position: relative;
     width: 100%;
     padding-bottom: 15px;
 }
 
-.container .box .photo .image-wrap img {
+.container .row .col-md-4 .image-wrap img {
     width: 100%;
+    height: auto;
     cursor: pointer;
     filter: grayscale(0) brightness(1);
     border-radius: 5px;
     transition: 0.2s linear;
 }
 
-.container .box .photo .image-wrap:hover img {
+.container .row .col-md-4 .image-wrap:hover img {
     filter: grayscale(1) brightness(0.5);
 }
 
-.container .box .photo .image-wrap .image-text {
+.container .row .col-md-4 .image-wrap .image-text {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -198,7 +211,7 @@ h3 {
     font-variation-settings: "wdth" 100; 
 }
 
-.container .box .photo .image-wrap:hover .image-text {
+.container .row .col-md-4 .image-wrap:hover .image-text {
     opacity: 1;
 }
 
@@ -391,7 +404,53 @@ main .galleries {
     bottom: -10px;
 }
 
+body, html {
+    overflow-x: hidden; /* Hide horizontal scroll */
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 /*Styles for mobiles and tablets*/
+@media (max-width: 768px) {
+    .col-md-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
 @media (max-width: 1023px) {
     .slider-wrapper .slide-button {
         display: none!important;
