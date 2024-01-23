@@ -48,60 +48,42 @@
     <main class="gallery2">
         <h3>Your Gallery</h3>
         <h4>Gallery 1</h4>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="image-wrap">
-                    <img src="../virtual-art-gallery/Assets/images/collections/28.jpg">
-                    <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-                    </div>
-                    <div class="image-wrap">
-                    <img src="../virtual-art-gallery/Assets/images/collections/29.jpg">
-                    <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-                    </div>
-                    <div class="image-wrap">
-                    <img src="../virtual-art-gallery/Assets/images/collections/30.jpg">
-                    <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="image-wrap">
-                    <img src="../virtual-art-gallery/Assets/images/collections/31.jpg">
-                    <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-                    </div>
-                    <div class="image-wrap">
-                    <img src="../virtual-art-gallery/Assets/images/collections/32.jpg">
-                    <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-                    </div>
-                    <div class="image-wrap">
-                    <img src="../virtual-art-gallery/Assets/images/collections/33.jpg">
-                    <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="image-wrap">
-                    <img src="../virtual-art-gallery/Assets/images/collections/34.jpg">
-                    <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-                    </div>
-                    <div class="image-wrap">
-                    <img src="../virtual-art-gallery/Assets/images/collections/35.jpg">
-                    <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-                    </div>
-                    <div class="image-wrap">
-                    <img src="../virtual-art-gallery/Assets/images/collections/36.jpg">
-                    <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-                    </div>
-                </div>
+        <div class="items">
+            <div class="item active">
+                <img class="modal-trigger" src="./Assets/images/collections/30.jpg">
+                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
+                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
             </div>
+            <div class="item next">
+                <img class="modal-trigger" src="./Assets/images/collections/31.jpg">
+                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
+                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
+            </div>
+            <div class="item">
+                <img class="modal-trigger" src="./Assets/images/collections/32.jpg">
+                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
+                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
+            </div>
+            <div class="item">
+                <img class="modal-trigger" src="./Assets/images/collections/33.jpg">
+                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
+                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
+            </div>
+            <div class="item">
+                <img class="modal-trigger" src="./Assets/images/collections/34.jpg">
+                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
+                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
+            </div>
+            <div class="item prev">
+                <img class="modal-trigger" src="./Assets/images/collections/35.jpg">
+                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
+                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
+            </div>
+            <div class="button-container">
+                <div class="button"><i class="fas fa-angle-left"></i></div>
+                <div class="button"><i class="fas fa-angle-right"></i></div>
+            </div>
+        </div>
 
             <div id="imageModal" class="modal">
                 <div class="modal-content">
@@ -113,12 +95,44 @@
                 </div>
             </div>
 
-            <div class="more-btn">
-                <a href="#">More</a>
-            </div>
-        </div>
     </main>
-    <footer></footer>    
+    
+    <!--JS for the 3D carousel effect-->
+    <script>
+        const slider = document.querySelector(".items");
+        const slides = document.querySelectorAll(".item");
+const button = document.querySelectorAll(".button");
+
+let current = 0;
+
+const updateIndices = () => {
+  return {
+    prev: current - 1 < 0 ? slides.length - 1 : current - 1,
+    next: current + 1 >= slides.length ? 0 : current + 1
+  };
+};
+
+for (let i = 0; i < button.length; i++) {
+  button[i].addEventListener("click", () => i === 0 ? gotoPrev() : gotoNext());
+}
+
+const gotoPrev = () => current > 0 ? gotoNum(current - 1) : gotoNum(slides.length - 1);
+
+const gotoNext = () => current < slides.length - 1 ? gotoNum(current + 1) : gotoNum(0);
+
+const gotoNum = number => {
+  current = number;
+  const { prev, next } = updateIndices();
+
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].classList.remove("active", "prev", "next");
+  }
+
+  slides[current].classList.add("active");
+  slides[prev].classList.add("prev");
+  slides[next].classList.add("next");
+};
+    </script>
 
     <!--JS for the modal functions-->
     <script>
@@ -136,9 +150,9 @@
             modal.style.display = "block";
         }
     
-        document.querySelectorAll('.image-wrap img').forEach(img => {
+        document.querySelectorAll('.modal-trigger').forEach(img => {
             img.onclick = function() {
-                openModal(this.src, this.nextElementSibling.innerText);
+                openModal(this.src, 'Image Description');
             };
         });
     </script>
