@@ -5,7 +5,7 @@
  * CONTRIBUTIONS: AHMED IBRAHIM
  * 
  **/
-const europeanaKey = "etticens"
+const europeanaKey = "radmitermonh"
 const harvardKey = "3e70e735-7cc4-493f-996e-a220833dd4a9"
 let results = []
 let tempResults
@@ -172,13 +172,12 @@ userSearch2.on("keypress", function (e) {
 
 bookmarkIcon.on("click", function () {
     
-    console.log($(this).attr("class"))
-
+    
     //highlight bookmark icon if selected
-    if ($(this).attr("class") === $(this).attr("fa-regular fa-bookmark bookmark-icon")) {
-
-        $(this).attr("class", "fa-solid fa-bookmark bookmark-icon solid")
-    }
+    // if ($(this).find("fa-regular fa-bookmark bookmark-icon")) {
+        
+        
+    // }
     
 
 
@@ -200,7 +199,7 @@ bookmarkIcon.on("click", function () {
         })
 
         if (!isAlreadySaved) {
-
+            $(this).attr("class", "fa-solid fa-bookmark bookmark-icon solid")
             storageItems.push(results[collectionsIndex])
             localStorage.setItem("saved", JSON.stringify(storageItems))
         }
