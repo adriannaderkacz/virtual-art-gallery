@@ -1,23 +1,32 @@
+/**
+ * 
+ * CODE CREATED BY: DAVOU JOBBI & AHMED IBRAHIM
+ * 
+ **/
+
+const userSearch2 = $("#search-input")
 let galleriesArray = JSON.parse(localStorage.getItem("saved"))
-
-
 
 
 function displayGalleriesData() {
 
-    // for (let i = 0; i < galleriesArray.length; i++) {
-    //     if (galleriesArray[i] && galleriesArray[i].image !== undefined) {
-
-    //         $("img").eq(i).attr("src", galleriesArray[i].image)
-    //         $(".image-text").text("NAME: " + galleriesArray[i].title + " ARTIST: " + galleriesArray[i].artist)
-    //     }
-    // }
 
     $("p").eq(0).text("Bookmarks")
     $("img").eq(0).attr("src", galleriesArray[0].image)
 
 }
 
+userSearch2.on("keypress", function (e) {
+    console.log("test")
+    localStorage.setItem("search", JSON.stringify(userSearch2.val()))
+    var key = e.which;
+    if (key == 13)  // the enter key code
+    if (key == 13)  // the enter key code
+    {
+        window.location.href = "collections.html"
+    }
+
+})
 
 
 $(document).ready(function () {

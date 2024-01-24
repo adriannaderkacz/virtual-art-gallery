@@ -1,8 +1,8 @@
 /**
  * 
- * CODE CREATED BY: DAVOU JOBBI
+ * CODE CREATED BY: DAVOU JOBBI & AHMED IBRAHIM
  * 
- * CONTRIBUTIONS: AHMED IBRAHIM
+ * 
  * 
  **/
 const europeanaKey = "radmitermonh"
@@ -11,6 +11,8 @@ let results = []
 let tempResults
 const userSearch2 = $("#search-input")
 const bookmarkIcon = $(".bookmark-icon")
+const moreBtn = $("#more-btn")
+const container = $(".col-md-4")
 
 
 
@@ -22,8 +24,8 @@ const bookmarkIcon = $(".bookmark-icon")
 async function fetchingAPI() {
     const userInput = JSON.parse(localStorage.getItem("search"))
     console.log(userInput)
-    const europeanaQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${europeanaKey}&query=what:("${userInput}")&rows=100&theme=art`
-    const harvardURL = `https://api.harvardartmuseums.org/object?apikey=${harvardKey}&title=${userInput}&size=100`;
+    const europeanaQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${europeanaKey}&query=title:("${userInput}")&rows=100&theme=art`
+    const harvardURL = `https://api.harvardartmuseums.org/object?classification=Paintings&apikey=${harvardKey}&title=${userInput}&size=100`;
 
     europeanaData = await fetch(europeanaQuery)
         .then(function (response) {
@@ -127,6 +129,7 @@ function tempStoreData(europeanaData, harvardData) {
             results.find(tit)
         } catch (error) {
             results[i] = {
+                id: i,
                 api: from,
                 title: tit,
                 artist: creator,
@@ -143,7 +146,7 @@ function tempStoreData(europeanaData, harvardData) {
 
 }
 
-// displayData()
+
 /**
  * 
  * FUNCTION FOR DISPLAYING THE ARRAY OF ART PEICES..
@@ -162,7 +165,6 @@ function displayData() {
 $(document).ready(function () {
 
     fetchingAPI()
-    fetchingAPI()
 
 })
 
@@ -178,6 +180,12 @@ userSearch2.on("keypress", function (e) {
 
 })
 
+moreBtn.on("click", function () {
+    console.log("test")
+    cardComponent = container.children()
+    container.append(cardComponent)
+    displayData() 
+})
 
 bookmarkIcon.on("click", function () {
     
@@ -192,7 +200,7 @@ bookmarkIcon.on("click", function () {
 
     // .index(this) finds the index or (position in array) of all the elements with the same class
     var collectionsIndex = bookmarkIcon.index(this)
-
+    console.log(collectionsIndex)
     // the condition makes sure that the index exists within the correct range before executing
     if (collectionsIndex >= 0 && collectionsIndex < results.length) {
         var storageItems = JSON.parse(localStorage.getItem("saved")) || []
@@ -206,7 +214,7 @@ bookmarkIcon.on("click", function () {
                 collectionsSavedItem.image === results[collectionsIndex].image
             )
         })
-
+        
         if (!isAlreadySaved) {
             $(this).attr("class", "fa-solid fa-bookmark bookmark-icon solid")
             storageItems.push(results[collectionsIndex])
@@ -215,12 +223,19 @@ bookmarkIcon.on("click", function () {
         //removes saved item and deselects bookmark if user clicks highlighted bookmark
         else if(isAlreadySaved){
             $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
-            storageItems.pop()
+            storageItems.splice(collectionsIndex,1)
             localStorage.setItem("saved", JSON.stringify(storageItems))
         }
 
     }
 
+    // for(let i = 0; i<)
+    // var bookmarkIndex = $(this).parent().children("img")
+    //bookmarkIndex.eq()
+    // console.log(bookmarkIndex)
+    //var storageItems = results[i]
+    //localStorage.setItem("saved", JSON.stringify(storageItems))
+    
 
 
     })
