@@ -24,8 +24,8 @@ const container = $(".col-md-4")
 async function fetchingAPI() {
     const userInput = JSON.parse(localStorage.getItem("search"))
     console.log(userInput)
-    const europeanaQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${europeanaKey}&query=title:("${userInput}")&rows=100&theme=art`
-    const harvardURL = `https://api.harvardartmuseums.org/object?classification=Paintings&apikey=${harvardKey}&title=${userInput}&size=100`;
+    const europeanaQuery = `https://api.europeana.eu/record/v2/search.json?wskey=${europeanaKey}&query=what:("${userInput}")&rows=100&theme=art`
+    const harvardURL = `https://api.harvardartmuseums.org/object?apikey=${harvardKey}&title=${userInput}&size=100`;
 
     europeanaData = await fetch(europeanaQuery)
         .then(function (response) {
@@ -59,89 +59,87 @@ async function fetchingAPI() {
  **/
 function tempStoreData(europeanaData, harvardData) {
 
-    for (let i = 0; i < (europeanaData.items.length + harvardData.records.length); i++) {
+    for (let i = 0; i < (europeanaData.items.length); i++) {
         let creator = ""
         let img = ""
         let tit = ""
         let prov = ""
         let from = ""
 
-        if (i < europeanaData.items.length) {
-            prov = europeanaData.items[i].dataProvider[0]
-            tit = europeanaData.items[i].title[0]
-            from = "Europeana"
-            try {
-                creator = europeanaData.items[i].dcCreator[0]
-            } catch (error) {
-                creator = "Unknown"
-            }
-            try {
-                img = europeanaData.items[i].edmPreview[0]
-            } catch (onerror) {
-                img = "./Assets/images/searchImgPlaceholder.jpeg"
-            }
 
-        }
-        else {
-            let j = i
-            let toDisplay = false
-            from = "Harvard"
-            while (toDisplay === false) {
-                try {
-                    img = harvardData.records[j - 100].images[0].baseimageurl
-                    toDisplay = true
-                } catch (error) {
-                    toDisplay = false
-                }
-                try {
-                    img = harvardData.records[j - 100].primaryimageurl
-                    toDisplay = true
-                } catch (error) {
-                    toDisplay = false
-                }
-                if (img === null || img === undefined) {
-                    toDisplay = false
-                }
-
-
-
-                j++
-
-            }
-            try {
-                prov = harvardData.records[j - 100].creditline
-            } catch (error) {
-                prov = "Unknown"
-            }
-            try {
-                tit = harvardData.records[j - 100].title
-            } catch (error) {
-                prov = "Unknown"
-            }
-            try {
-                creator = harvardData.records[j - 100].people[0].alphasort
-            } catch (error) {
-                creator = "Unknown"
-            }
-        }
-
+        prov = europeanaData.items[i].dataProvider[0]
+        tit = europeanaData.items[i].title[0]
+        from = "Europeana"
         try {
-            results.find(tit)
+            creator = europeanaData.items[i].dcCreator[0]
         } catch (error) {
-            results[i] = {
-                id: i,
-                api: from,
-                title: tit,
-                artist: creator,
-                provider: prov,
-                image: img
-            }
+            creator = "Unknown"
+        }
+        try {
+            img = europeanaData.items[i].edmPreview[0]
+        } catch (onerror) {
+            img = "./Assets/images/placeholderimg.png"
         }
 
+        results[i] = {
+            id: i,
+            api: from,
+            title: tit,
+            artist: creator,
+            provider: prov,
+            image: img
+        }
+        console.log(results[i].image)
 
     }
+
+    for (let i = 0; i < (harvardData.records.length); i++) {
+        let creator = ""
+        let img = ""
+        let tit = ""
+        let prov = ""
+        let from = ""
+        let hasImg = false
+
+
+        try {
+            img = harvardData.records[i].images[0].baseimageurl
+            
+        } catch (onerror) {
+            img = "empty"
+            
+        }
+
+
+        try {
+            prov = harvardData.records[i].creditline
+        } catch (error) {
+            prov = "Unknown"
+        }
+        try {
+            tit = harvardData.records[i].title
+        } catch (error) {
+            prov = "Unknown"
+        }
+        try {
+            creator = harvardData.records[i].people[0].alphasort
+        } catch (error) {
+            creator = "Unknown"
+        }
+        results[i + 100] = {
+            id: i,
+            api: from,
+            title: tit,
+            artist: creator,
+            provider: prov,
+            image: img
+        }
+        console.log(results[i + 100].image)
+
+    }
+
     results.sort(() => Math.random() - 0.5)
-    console.log(results)
+
     return results
 
 }
@@ -154,11 +152,14 @@ function tempStoreData(europeanaData, harvardData) {
  * 
  **/
 function displayData() {
-
-    for (let i = 0; i < results.length; i++) {
-        $("img").eq(i).attr("src", results[i].image)
-        $("p").eq(i).text("Name: " + results[i].title + " Artist: " + results[i].artist)
-    }
+    
+        for (let i = 0; i < results.length; i+=2) {
+            if(results[i].image !== "empty"){
+            $("img").eq(i).attr("src", results[i].image)
+            $("p").eq(i).text("Name: " + results[i].title)
+            //$(".image-wrap").index(2).append(`<p class="image-text"> Artist: ${results[i].artist}</p>`)
+            }
+        }
 
 }
 
@@ -173,10 +174,10 @@ userSearch2.on("keypress", function (e) {
     localStorage.setItem("search", JSON.stringify(userSearch2.val()))
     var key = e.which;
     if (key == 13)  // the enter key code
-    if (key == 13)  // the enter key code
-    {
-        fetchingAPI()
-    }
+        if (key == 13)  // the enter key code
+        {
+            fetchingAPI()
+        }
 
 })
 
@@ -184,18 +185,18 @@ moreBtn.on("click", function () {
     console.log("test")
     cardComponent = container.children()
     container.append(cardComponent)
-    displayData() 
+    displayData()
 })
 
 bookmarkIcon.on("click", function () {
-    
-    
+
+
     //highlight bookmark icon if selected
     // if ($(this).find("fa-regular fa-bookmark bookmark-icon")) {
-        
-        
+
+
     // }
-    
+
 
 
     // .index(this) finds the index or (position in array) of all the elements with the same class
@@ -214,16 +215,16 @@ bookmarkIcon.on("click", function () {
                 collectionsSavedItem.image === results[collectionsIndex].image
             )
         })
-        
+
         if (!isAlreadySaved) {
             $(this).attr("class", "fa-solid fa-bookmark bookmark-icon solid")
             storageItems.push(results[collectionsIndex])
             localStorage.setItem("saved", JSON.stringify(storageItems))
         }
         //removes saved item and deselects bookmark if user clicks highlighted bookmark
-        else if(isAlreadySaved){
+        else if (isAlreadySaved) {
             $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
-            storageItems.splice(collectionsIndex,1)
+            storageItems.splice(collectionsIndex, 1)
             localStorage.setItem("saved", JSON.stringify(storageItems))
         }
 
@@ -235,7 +236,7 @@ bookmarkIcon.on("click", function () {
     // console.log(bookmarkIndex)
     //var storageItems = results[i]
     //localStorage.setItem("saved", JSON.stringify(storageItems))
-    
 
 
-    })
+
+})

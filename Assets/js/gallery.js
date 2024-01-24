@@ -6,6 +6,7 @@
 **/
 const userSearch2 = $("#search-input")
 let galleriesArray = JSON.parse(localStorage.getItem("saved"))
+const bookmarkIcon = $(".bookmark-icon")
 
 function displaySaved() {
 
@@ -23,10 +24,12 @@ function displaySaved() {
 
     for (let i = 2; i < galleriesArray.length - 1; i++) {
 
-        $(".items").append(`<div class="item active">
-        <img class="modal-trigger" src="${galleriesArray[i].image}" id = "${i}">
+        $(".items").append(`<div class="item">
+        <img class="modal-trigger" src="./Assets/images/collections/22.jpg">
         <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-        <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>`)
+        <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
+    </div>
+        `)
     }
     $(".items").append(`<div class="item prev">
                 <img class="modal-trigger" src="${galleriesArray[galleriesArray.length-1].image}" id = "${galleriesArray.length-1}">
@@ -119,3 +122,45 @@ $(document).ready(function () {
     modal()
 })
 
+bookmarkIcon.on("click", function () {
+
+
+    //highlight bookmark icon if selected
+    // if ($(this).find("fa-regular fa-bookmark bookmark-icon")) {
+
+
+    // }
+
+
+
+    // .index(this) finds the index or (position in array) of all the elements with the same class
+    var collectionsIndex = bookmarkIcon.index(this)
+    console.log(collectionsIndex)
+    // the condition makes sure that the index exists within the correct range before executing
+    if (collectionsIndex >= 0 && collectionsIndex < results.length) {
+        var storageItems = JSON.parse(localStorage.getItem("saved")) || []
+
+        //  .some() runs through the entire array and returns true or false depending on whether everything inside the return is ===
+        var isAlreadySaved = storageItems.some(function (collectionsSavedItem) {
+            return (
+                collectionsSavedItem.title === results[collectionsIndex].title &&
+                collectionsSavedItem.artist === results[collectionsIndex].artist &&
+                collectionsSavedItem.provider === results[collectionsIndex].provider &&
+                collectionsSavedItem.image === results[collectionsIndex].image
+            )
+        })
+
+        if (!isAlreadySaved) {
+            $(this).attr("class", "fa-solid fa-bookmark bookmark-icon solid")
+            storageItems.push(results[collectionsIndex])
+            localStorage.setItem("saved", JSON.stringify(storageItems))
+        }
+        //removes saved item and deselects bookmark if user clicks highlighted bookmark
+        else if (isAlreadySaved) {
+            $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
+            storageItems.splice(collectionsIndex, 1)
+            localStorage.setItem("saved", JSON.stringify(storageItems))
+        }
+
+    }
+})
