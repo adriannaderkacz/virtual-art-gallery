@@ -39,7 +39,7 @@ const initSlider = () => {
         document.addEventListener("mouseup", handleMouseUp);
     });
 
-    //Slide images accoriding to the slide button clicks
+    //Slide images accordingly to the slide button clicks
     slideButtons.forEach(button => {
         button.addEventListener("click", () => {
             const direction = button.id === "prev-slide" ? -1 : 1;

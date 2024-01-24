@@ -7,7 +7,7 @@
 const userSearch2 = $("#search-input")
 let galleriesArray = JSON.parse(localStorage.getItem("saved"))
 
-function dislpaySaved() {
+function displaySaved() {
 
     $(".items").append(`<div class="item active">
     <img class="modal-trigger" src="${galleriesArray[0].image}" id = "${0}">
@@ -114,7 +114,7 @@ userSearch2.on("keypress", function (e) {
 })
 
 $(document).ready(function () {
-    dislpaySaved()
+    displaySaved()
     carouselEffect()
     modal()
 })
