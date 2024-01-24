@@ -69,7 +69,7 @@ h3 {
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
-    margin-top: 20px;
+    margin-top: 0px;
     margin-bottom: 20px;
 }
 
@@ -224,19 +224,23 @@ h4 {
     display: none;
 }
 
-.image-wrap .fa-regular.fa-bookmark {
+.image-wrap .fa-regular.fa-bookmark,
+.item .fa-regular.fa-bookmark {
     display: none;
 }
 
-.image-wrap:hover .fa-regular.fa-bookmark {
+.image-wrap:hover .fa-regular.fa-bookmark,
+.item:hover .fa-regular.fa-bookmark {
     display: block;
 }
 
-.image-wrap.marked .fa-solid.fa-bookmark {
+.image-wrap.marked .fa-solid.fa-bookmark,
+.item.marked .fa-solid.fa-bookmark {
     display: none;
 }
 
-.image-wrap.marked:hover .fa-regular.fa-bookmark {
+.image-wrap.marked:hover .fa-regular.fa-bookmark,
+.item.marked:hover, .fa-regular.fa-bookmark {
     display: block;
 }
 
@@ -405,28 +409,28 @@ main .galleries {
 }
 
 body, html {
-    overflow-x: hidden; /* Hide horizontal scroll */
+    overflow-x: hidden;
 }
 
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    display: none;
+    position: fixed; 
+    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 80%;
 }
 
 .close {
@@ -442,6 +446,106 @@ body, html {
     text-decoration: none;
     cursor: pointer;
 }
+
+/*Styles for my galleries*/
+.items {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    user-select: none;
+  }
+  
+  .items .item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border-radius: 5%;
+    overflow: hidden;
+    transition: all 300ms ease-in-out;
+    transform: translate(-50%, -50%) scale(0.8);
+    z-index: -1;
+    opacity: 0;
+  }
+  
+  .item.active {
+    opacity: 1;
+    z-index: 99;
+    transform: translate(-50%, -50%) scale(1.0);
+    box-shadow: 0px 0px 105px -35px rgba(0, 0, 0, 0.75);
+  }
+  
+  .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    filter: grayscale(0) brightness(1);
+  }
+
+  .item:hover img {
+    filter: grayscale(1) brightness(0.5);
+  }
+  
+  .item.prev, .item.next {
+    z-index: 2;
+    opacity: 0.25;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  
+  .item.prev {
+    transform: translate(-125%, -50%) scale(0.8);
+  }
+  
+  .item.next {
+    transform: translate(25%, -50%) scale(0.8);
+  }
+  
+  .items .button-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 275px;
+    z-index: 100;
+  }
+  
+  .button-container .button {
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    position: relative;
+    opacity: 0.75;
+    transition: all 300ms ease-in-out;
+  }
+  
+  .button-container .button:hover {
+    opacity: 1;
+  }
+  
+  .button-container .button:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background-color: #777;
+    border-radius: 50%;
+    z-index: -99;
+  }
+  
+  .button-container .button:nth-child(1) {
+    float: left;
+  }
+  
+  .button-container .button:nth-child(2) {
+    float: right;
+  }
 
 /*Styles for mobiles and tablets*/
 @media (max-width: 768px) {
