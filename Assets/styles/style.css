@@ -433,8 +433,12 @@ body, html {
     background-color: #fefefe;
     margin: 10% auto;
     padding: 20px;
-    border: 1px solid #888;
     width: 65%;
+    color: black;
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
 }
 
 .close {
@@ -571,11 +575,6 @@ body, html {
 
     .home-section h4 {
         margin-top: 400px;
-    }
-
-    .modal-content {
-        width: 90%;
-        margin: 20% auto;
     }
 
     .items .button-container {
