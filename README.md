@@ -30,6 +30,8 @@ Application deployed via the live GitHub URL: https://adriannaderkacz.github.io/
 
 ![Gif of page](/Assets/images/readme/Screenshot4.png)
 
+![Gif of page](/Assets/images/readme/Screenshot5.png)
+
 ## Features
 Key features of the Virtual Art Gallery:
 
