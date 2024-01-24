@@ -247,18 +247,23 @@ h4 {
 .container .more-btn {
     margin: 40px 0 70px 0;
     background: #77777796;
-    padding: 15px 40px;
-    border-radius: 20px;
+    padding: 10px 30px;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.container .more-btn:active {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.19);
 }
 
 .container .more-btn a {
     color: white;
     font-size: 1.2em;
     text-decoration: none;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     font-family: "Noto Sans", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 200;
+    font-weight: 400;
     font-style: normal;
     font-variation-settings: "wdth" 100;
 }
@@ -663,12 +668,6 @@ body, html {
 
     .slider-scrollbar .scrollbar-thumb {
         width: 20%;
-    }
-
-    .navbar-nav .nav-link::after {
-        width: 100%;
-        left: 0;
-        transform: translateY(100%);
     }
 
     .items .item {
