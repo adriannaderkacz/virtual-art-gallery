@@ -5,20 +5,25 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="./Assets/styles/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <title>Your Gallery</title>
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-transparent">
@@ -26,14 +31,16 @@
                 <!-- Search component -->
                 <div class="search-btn d-flex align-items-center">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" name="" placeholder="Find your art" class="form-control">
+                    <input id = "search-input" type="text" name="" placeholder="Find your art" class="form-control">
                 </div>
-                
+
                 <!-- Toggler button for mobile view -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                
+
                 <!-- Navigation Links -->
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav ms-auto">
@@ -49,120 +56,38 @@
         <h3>Your Gallery</h3>
         <h4>Bookmarks</h4>
         <div class="items">
-            <div class="item active">
-                <img class="modal-trigger" src="./Assets/images/collections/19.jpg">
-                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-            </div>
-            <div class="item next">
-                <img class="modal-trigger" src="./Assets/images/collections/20.jpg">
-                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-            </div>
-            <div class="item">
-                <img class="modal-trigger" src="./Assets/images/collections/21.jpg">
-                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-            </div>
-            <div class="item">
-                <img class="modal-trigger" src="./Assets/images/collections/22.jpg">
-                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-            </div>
-            <div class="item">
-                <img class="modal-trigger" src="./Assets/images/collections/23.jpg">
-                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-            </div>
-            <div class="item prev">
-                <img class="modal-trigger" src="./Assets/images/collections/24.jpg">
-                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
-            </div>
-            <div class="button-container">
-                <div class="button"><i class="fas fa-angle-left"></i></div>
-                <div class="button"><i class="fas fa-angle-right"></i></div>
+            
+        </div>
+
+        <div id="imageModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modal-body">
+                    <img id="modalImage" src="" alt="Enlarged image" style="width:50%; float:left;">
+                    <p id="modalDescription" style="float:right; width:45%; margin-left:5%;">Description here</p>
+                </div>
             </div>
         </div>
 
-            <div id="imageModal" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <div class="modal-body">
-                        <img id="modalImage" src="" alt="Enlarged image" style="width:50%; float:left;">
-                        <p id="modalDescription" style="float:right; width:45%; margin-left:5%;">Description here</p>
-                    </div>
-                </div>
-            </div>
-
     </main>
-    
+
     <!--JS for the 3D carousel effect-->
     <script>
-        const slider = document.querySelector(".items");
-        const slides = document.querySelectorAll(".item");
-const button = document.querySelectorAll(".button");
-
-let current = 0;
-
-const updateIndices = () => {
-  return {
-    prev: current - 1 < 0 ? slides.length - 1 : current - 1,
-    next: current + 1 >= slides.length ? 0 : current + 1
-  };
-};
-
-for (let i = 0; i < button.length; i++) {
-  button[i].addEventListener("click", () => i === 0 ? gotoPrev() : gotoNext());
-}
-
-const gotoPrev = () => current > 0 ? gotoNum(current - 1) : gotoNum(slides.length - 1);
-
-const gotoNext = () => current < slides.length - 1 ? gotoNum(current + 1) : gotoNum(0);
-
-const gotoNum = number => {
-  current = number;
-  const { prev, next } = updateIndices();
-
-  for (let i = 0; i < slides.length; i++) {
-    slides[i].classList.remove("active", "prev", "next");
-  }
-
-  slides[current].classList.add("active");
-  slides[prev].classList.add("prev");
-  slides[next].classList.add("next");
-};
+        
     </script>
 
     <!--JS for the modal functions-->
     <script>
-        var modal = document.getElementById("imageModal");
-    
-        var span = document.getElementsByClassName("close")[0];
-    
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-    
-        function openModal(imageSrc, description) {
-            document.getElementById("modalImage").src = imageSrc;
-            document.getElementById("modalDescription").innerText = description;
-            modal.style.display = "block";
-        }
-    
-        document.querySelectorAll('.modal-trigger').forEach(img => {
-            img.onclick = function() {
-                openModal(this.src, 'Image Description');
-            };
-        });
+        
     </script>
-    
+
     <!-- jQuery JS -->
     <script src="https://code.jquery.com/jquery.js"></script>
     <!-- jQuery JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <!-- fetch JS -->
-    <script src="./assets/js/fetch.js"></script>
-    <!--<script src="./assets/js/display.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <!-- galleries JS -->
+    <script src="./assets/js/gallery.js"></script>
 </body>
+
 </html>
