@@ -106,7 +106,7 @@ function tempStoreData(europeanaData, harvardData) {
             img = harvardData.records[i].images[0].baseimageurl
 
         } catch (onerror) {
-            img = "Assets/images/placeholder-image.png"
+            img = "empty"
 
         }
 
@@ -139,7 +139,7 @@ function tempStoreData(europeanaData, harvardData) {
     }
 
     results.sort(() => Math.random() - 0.5)
-
+    
     return results
 
 }
@@ -154,7 +154,7 @@ function tempStoreData(europeanaData, harvardData) {
 function displayData() {
 
     for (let i = 0; i < results.length; i++) {
-        if (results[i].image !== undefined) {
+        if (results[i].image !== "empty") {
             const eachColumn = i % 3
             var imageWrapDiv = document.createElement("div")
             imageWrapDiv.setAttribute("class", "image-wrap")

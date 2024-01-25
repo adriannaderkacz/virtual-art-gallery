@@ -1,47 +1,48 @@
 
 /** 
  * 
- * CODE CREATED BY: ADRIANNA DERKACZ & DAVOU JOBBI
+ * CODE CREATED BY: ADRIANNA DERKACZ, DAVOU JOBBI & Ahmed IBRAHIM
  * 
 **/
 let storageArray = JSON.parse(localStorage.getItem("keys"))
 let galleriesArray = []
 
-for (let i = 0; i < storageArray.length; i++) {
-    const eachKey = storageArray[i];
-let galleryObject = JSON.parse(localStorage.getItem(eachKey))
-galleriesArray.push(galleryObject)
-    
-}
-
-
 const userSearch2 = $("#search-input")
 
 const bookmarkIcon = $(".bookmark-icon")
 
+function getBookmarks() {
+    for (let i = 0; i < storageArray.length; i++) {
+        const eachKey = storageArray[i];
+        let galleryObject = JSON.parse(localStorage.getItem(eachKey))
+        galleriesArray.push(galleryObject)
+
+    }
+}
+
 function displaySaved() {
 
     $(".items").append(`<div class="item active">
-    <img class="modal-trigger" src="${galleriesArray[0].image}" id = "${0}">
+    <img class="modal-trigger" src="${galleriesArray[0].image}" id = "${storageArray[0]}">
     
     <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff;"></i>
 </div>`)
 
     $(".items").append(`<div class="item next">
-    <img class="modal-trigger" src="${galleriesArray[1].image}" id = "${1}">
+    <img class="modal-trigger" src="${galleriesArray[1].image}" id = "${storageArray[1]}">
     <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff;"></i>
 </div>`)
 
     for (let i = 2; i < galleriesArray.length - 1; i++) {
 
         $(".items").append(`<div class="item">
-        <img class="modal-trigger" src="./Assets/images/collections/22.jpg">
+        <img class="modal-trigger" src="${galleriesArray[i].image}" id = "${storageArray[i]}">
         <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff;"></i>
     </div>
         `)
     }
     $(".items").append(`<div class="item prev">
-                <img class="modal-trigger" src="${galleriesArray[galleriesArray.length-1].image}" id = "${galleriesArray.length-1}">
+                <img class="modal-trigger" src="${galleriesArray[galleriesArray.length - 1].image}" id = "${storageArray[storageArray.length - 1]}">
                 <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; "></i>
             </div>`)
 
@@ -116,7 +117,7 @@ userSearch2.on("keypress", function (e) {
     console.log("test")
     localStorage.setItem("search", JSON.stringify(userSearch2.val()))
     var key = e.which;
-    
+
     if (key == 13)  // the enter key code
     {
         window.location.href = "collections.html"
@@ -125,50 +126,52 @@ userSearch2.on("keypress", function (e) {
 })
 
 $(document).ready(function () {
+    getBookmarks()
     displaySaved()
     carouselEffect()
     modal()
-})
 
-bookmarkIcon.on("click", function () {
+    $(".bookmark-icon").on("click", function () {
 
+        const id = $(this).parent().children("img").attr("id")
 
-    //highlight bookmark icon if selected
-    // if ($(this).find("fa-regular fa-bookmark bookmark-icon")) {
+        console.log(id)
 
+        const keysArray = JSON.parse(localStorage.getItem("keys")) || []
 
-    // }
+        
 
+        if (!keysArray.includes(id)) {
+            const hasImg = (element) => element = id;
+            
+            keysArray.push(id)
 
+            localStorage.setItem("keys", JSON.stringify(keysArray))
 
-    // .index(this) finds the index or (position in array) of all the elements with the same class
-    var collectionsIndex = bookmarkIcon.index(this)
-    console.log(collectionsIndex)
-    // the condition makes sure that the index exists within the correct range before executing
-    if (collectionsIndex >= 0 && collectionsIndex < results.length) {
-        var storageItems = JSON.parse(localStorage.getItem("saved")) || []
+            localStorage.setItem(id, JSON.stringify(galleriesArray[galleriesArray.findIndex(hasImg)]))
 
-        //  .some() runs through the entire array and returns true or false depending on whether everything inside the return is ===
-        var isAlreadySaved = storageItems.some(function (collectionsSavedItem) {
-            return (
-                collectionsSavedItem.title === results[collectionsIndex].title &&
-                collectionsSavedItem.artist === results[collectionsIndex].artist &&
-                collectionsSavedItem.provider === results[collectionsIndex].provider &&
-                collectionsSavedItem.image === results[collectionsIndex].image
-            )
-        })
-
-        if (!isAlreadySaved) {
             $(this).attr("class", "fa-solid fa-bookmark bookmark-icon solid")
-            storageItems.push(results[collectionsIndex])
-            localStorage.setItem("saved", JSON.stringify(storageItems))
-        }
-        //removes saved item and deselects bookmark if user clicks highlighted bookmark
-        else if (isAlreadySaved) {
-            $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
-            storageItems.splice(collectionsIndex, 1)
-            localStorage.setItem("saved", JSON.stringify(storageItems))
-        }
 
-    }
+            const it = $(this).attr("class")
+
+            console.log(it)
+
+
+        }
+        else {
+            const remove = keysArray.indexOf(id)
+            if (remove !== -1) {
+                keysArray.splice(remove, 1)
+                localStorage.removeItem(id)
+                localStorage.setItem("keys", JSON.stringify(keysArray))
+                $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
+                const is = $(this).attr("class")
+                console.log(is)
+            }
+
+        }
+    })
+
 })
+
+

@@ -5,14 +5,14 @@
  **/
 
 const userSearch2 = $("#search-input")
-let galleriesArray = JSON.parse(localStorage.getItem("saved"))
+let galleriesArray = JSON.parse(localStorage.getItem("keys"))
 
 
 function displayGalleriesData() {
 
 
     $("p").eq(0).text("Bookmarks")
-    $("img").eq(0).attr("src", galleriesArray[0].image)
+    $("img").eq(0).attr("src", galleriesArray[0])
 
 }
 
