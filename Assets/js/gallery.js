@@ -108,7 +108,7 @@ userSearch2.on("keypress", function (e) {
     console.log("test")
     localStorage.setItem("search", JSON.stringify(userSearch2.val()))
     var key = e.which;
-    if (key == 13)  // the enter key code
+    
     if (key == 13)  // the enter key code
     {
         window.location.href = "collections.html"

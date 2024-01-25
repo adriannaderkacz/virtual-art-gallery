@@ -78,7 +78,7 @@ function tempStoreData(europeanaData, harvardData) {
         try {
             img = europeanaData.items[i].edmPreview[0]
         } catch (onerror) {
-            img = "./Assets/images/placeholderimg.png"
+            img = "Assets/images/placeholder-image.png"
         }
 
         results[i] = {
@@ -106,7 +106,7 @@ function tempStoreData(europeanaData, harvardData) {
             img = harvardData.records[i].images[0].baseimageurl
             
         } catch (onerror) {
-            img = "empty"
+            img = "Assets/images/placeholder-image.png"
             
         }
 
@@ -153,11 +153,22 @@ function tempStoreData(europeanaData, harvardData) {
  **/
 function displayData() {
     
-        for (let i = 0; i < results.length; i+=2) {
-            if(results[i].image !== "empty"){
-            $("img").eq(i).attr("src", results[i].image)
-            $("p").eq(i).text("Name: " + results[i].title)
-            //$(".image-wrap").index(2).append(`<p class="image-text"> Artist: ${results[i].artist}</p>`)
+        for (let i = 0; i < results.length; i++) {
+            if(results[i].image !== undefined){
+            
+            var imageWrapDiv = document.createElement("div")
+            imageWrapDiv.setAttribute("class", "image-wrap")
+            var imageTag = document.createElement("img")
+            var pTag = document.createElement("p")
+            pTag.setAttribute("class", "image-text")
+            var iconTag = document.createElement("i")
+            iconTag.setAttribute("class", "fa-regular fa-bookmark bookmark-icon")
+            iconTag.setAttribute("style", "color: #ffffff")
+            container.append(imageWrapDiv)
+            imageWrapDiv.append(imageTag, pTag, iconTag)
+            $(imageTag).attr("src", results[i].image)
+            $(pTag).text("Name: " + results[i].title)
+            
             }
         }
 
@@ -173,7 +184,6 @@ userSearch2.on("keypress", function (e) {
     console.log("test")
     localStorage.setItem("search", JSON.stringify(userSearch2.val()))
     var key = e.which;
-    if (key == 13)  // the enter key code
         if (key == 13)  // the enter key code
         {
             fetchingAPI()
@@ -181,12 +191,12 @@ userSearch2.on("keypress", function (e) {
 
 })
 
-moreBtn.on("click", function () {
-    console.log("test")
-    cardComponent = container.children()
-    container.append(cardComponent)
-    displayData()
-})
+// moreBtn.on("click", function () {
+//     console.log("test")
+//     cardComponent = container.children()
+//     container.append(cardComponent)
+//     displayData()
+// })
 
 bookmarkIcon.on("click", function () {
 
