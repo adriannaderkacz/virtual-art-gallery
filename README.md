@@ -13,6 +13,8 @@ Designed with an eye for aesthetics and user-friendliness, the Virtual Art Galle
 
 In essence, the Virtual Art Gallery is not just a showcase of art; it is a narrative woven from the threads of artistic expression across time and space. It's a digital haven where art lovers can immerse themselves in the beauty of creativity, learn from the stories of the past, and connect with the essence of human expression in its most visual form.
 
+Presentation slide deck: https://www.canva.com/design/DAF67EJ8E_M/9F723BdWMs_MHfFMpicQrw/edit?utm_content=DAF67EJ8E_M&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton.
+
 ## Table of Contents 
 - [Deployment](#deployment)
 - [Features](#features)
@@ -102,9 +104,9 @@ SOFTWARE.
 ---
 
 ## Badges CHANGE
-![badmath](https://img.shields.io/badge/HTML-00.00-blue)
-![badmath](https://img.shields.io/badge/CSS-00.00-orange)
-![badmath](https://img.shields.io/badge/js-00.00-purple)
+![badmath](https://img.shields.io/badge/HTML-57.4-blue)
+![badmath](https://img.shields.io/badge/CSS-18.9-orange)
+![badmath](https://img.shields.io/badge/js-23.7-purple)
 
 ## How to Contribute
 No contributions*.
