@@ -4,37 +4,45 @@
  * CODE CREATED BY: ADRIANNA DERKACZ & DAVOU JOBBI
  * 
 **/
+let storageArray = JSON.parse(localStorage.getItem("keys"))
+let galleriesArray = []
+
+for (let i = 0; i < storageArray.length; i++) {
+    const eachKey = storageArray[i];
+let galleryObject = JSON.parse(localStorage.getItem(eachKey))
+galleriesArray.push(galleryObject)
+    
+}
+
+
 const userSearch2 = $("#search-input")
-let galleriesArray = JSON.parse(localStorage.getItem("saved"))
+
 const bookmarkIcon = $(".bookmark-icon")
 
 function displaySaved() {
 
     $(".items").append(`<div class="item active">
     <img class="modal-trigger" src="${galleriesArray[0].image}" id = "${0}">
-    <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
+    
+    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff;"></i>
 </div>`)
 
     $(".items").append(`<div class="item next">
     <img class="modal-trigger" src="${galleriesArray[1].image}" id = "${1}">
-    <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
+    <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff;"></i>
 </div>`)
 
     for (let i = 2; i < galleriesArray.length - 1; i++) {
 
         $(".items").append(`<div class="item">
         <img class="modal-trigger" src="./Assets/images/collections/22.jpg">
-        <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-        <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
+        <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff;"></i>
     </div>
         `)
     }
     $(".items").append(`<div class="item prev">
                 <img class="modal-trigger" src="${galleriesArray[galleriesArray.length-1].image}" id = "${galleriesArray.length-1}">
-                <i class="fa-regular fa-bookmark bookmark-icon" style="color: #ffffff;"></i>
-                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; display: none;"></i>
+                <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; "></i>
             </div>`)
 
     $(".items").append(`<div class="button-container">
@@ -108,7 +116,7 @@ userSearch2.on("keypress", function (e) {
     console.log("test")
     localStorage.setItem("search", JSON.stringify(userSearch2.val()))
     var key = e.which;
-    if (key == 13)  // the enter key code
+    
     if (key == 13)  // the enter key code
     {
         window.location.href = "collections.html"

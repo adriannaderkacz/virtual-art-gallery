@@ -78,7 +78,7 @@ function tempStoreData(europeanaData, harvardData) {
         try {
             img = europeanaData.items[i].edmPreview[0]
         } catch (onerror) {
-            img = "./Assets/images/placeholderimg.png"
+            img = "Assets/images/placeholder-image.png"
         }
 
         results[i] = {
@@ -89,7 +89,7 @@ function tempStoreData(europeanaData, harvardData) {
             provider: prov,
             image: img
         }
-        console.log(results[i].image)
+
 
     }
 
@@ -104,10 +104,10 @@ function tempStoreData(europeanaData, harvardData) {
 
         try {
             img = harvardData.records[i].images[0].baseimageurl
-            
+
         } catch (onerror) {
-            img = "empty"
-            
+            img = "Assets/images/placeholder-image.png"
+
         }
 
 
@@ -134,7 +134,7 @@ function tempStoreData(europeanaData, harvardData) {
             provider: prov,
             image: img
         }
-        console.log(results[i + 100].image)
+
 
     }
 
@@ -152,14 +152,66 @@ function tempStoreData(europeanaData, harvardData) {
  * 
  **/
 function displayData() {
-    
-        for (let i = 0; i < results.length; i+=2) {
-            if(results[i].image !== "empty"){
-            $("img").eq(i).attr("src", results[i].image)
-            $("p").eq(i).text("Name: " + results[i].title)
-            //$(".image-wrap").index(2).append(`<p class="image-text"> Artist: ${results[i].artist}</p>`)
-            }
+
+    for (let i = 0; i < results.length; i++) {
+        if (results[i].image !== undefined) {
+            const eachColumn = i % 3
+            var imageWrapDiv = document.createElement("div")
+            imageWrapDiv.setAttribute("class", "image-wrap")
+            imageWrapDiv.setAttribute("id", results[i].image)
+            var imageTag = document.createElement("img")
+            var pTag = document.createElement("p")
+            pTag.setAttribute("class", "image-text")
+            var iconTag = document.createElement("i")
+            iconTag.setAttribute("class", "fa-regular fa-bookmark bookmark-icon")
+            iconTag.setAttribute("style", "color: #ffffff")
+            container.eq(eachColumn).append(imageWrapDiv)
+            imageWrapDiv.append(imageTag, pTag, iconTag)
+            $(imageTag).attr("src", results[i].image)
+            $(pTag).text("Name: " + results[i].title)
+
+
+            
+            $(iconTag).on("click", function () {
+                const id = $(this).parent().attr("id")
+
+                const keysArray = JSON.parse(localStorage.getItem("keys")) || []
+
+                if (!keysArray.includes(id)) {
+
+                    keysArray.push(id)
+
+                    localStorage.setItem("keys", JSON.stringify(keysArray))
+
+                    localStorage.setItem(id, JSON.stringify(results[i]))
+
+                    $(this).attr("class", "fa-solid fa-bookmark bookmark-icon solid")
+
+                    const it =$(this).attr("class")
+
+                    console.log(it)
+
+
+                }
+                else {
+                    const remove = keysArray.indexOf(id)
+                    if (remove !== -1) {
+                        keysArray.splice(remove, 1)
+                        localStorage.removeItem(id)
+                        localStorage.setItem("keys", JSON.stringify(keysArray))
+                        $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
+                        const is = $(this).attr("class")
+                        console.log(is)
+                    }
+                    
+                }
+
+
+            })
         }
+
+
+    }
 
 }
 
@@ -174,69 +226,96 @@ userSearch2.on("keypress", function (e) {
     localStorage.setItem("search", JSON.stringify(userSearch2.val()))
     var key = e.which;
     if (key == 13)  // the enter key code
-        if (key == 13)  // the enter key code
-        {
-            fetchingAPI()
-        }
+    {
+        fetchingAPI()
+    }
 
 })
 
-moreBtn.on("click", function () {
-    console.log("test")
-    cardComponent = container.children()
-    container.append(cardComponent)
-    displayData()
-})
-
-bookmarkIcon.on("click", function () {
 
 
-    //highlight bookmark icon if selected
-    // if ($(this).find("fa-regular fa-bookmark bookmark-icon")) {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// moreBtn.on("click", function () {
+//     console.log("test")
+//     cardComponent = container.children()
+//     container.append(cardComponent)
+//     displayData()
+// })
+
+// bookmarkIcon.on("click", function () {
+
+
+//     //highlight bookmark icon if selected
+//     // if ($(this).find("fa-regular fa-bookmark bookmark-icon")) {
+
+
+//     // }
+
+
+
+//     // .index(this) finds the index or (position in array) of all the elements with the same class
+//     var collectionsIndex = bookmarkIcon.index(this)
+//     console.log(collectionsIndex)
+//     // the condition makes sure that the index exists within the correct range before executing
+//     if (collectionsIndex >= 0 && collectionsIndex < results.length) {
+//         var storageItems = JSON.parse(localStorage.getItem("saved")) || []
+
+//         //  .some() runs through the entire array and returns true or false depending on whether everything inside the return is ===
+//         var isAlreadySaved = storageItems.some(function (collectionsSavedItem) {
+//             return (
+//                 collectionsSavedItem.title === results[collectionsIndex].title &&
+//                 collectionsSavedItem.artist === results[collectionsIndex].artist &&
+//                 collectionsSavedItem.provider === results[collectionsIndex].provider &&
+//                 collectionsSavedItem.image === results[collectionsIndex].image
+//             )
+//         })
+
+    //     if (!isAlreadySaved) {
+    //         $(this).attr("class", "fa-solid fa-bookmark bookmark-icon solid")
+    //         storageItems.push(results[collectionsIndex])
+    //         localStorage.setItem("saved", JSON.stringify(storageItems))
+    //     }
+    //     //removes saved item and deselects bookmark if user clicks highlighted bookmark
+    //     else if (isAlreadySaved) {
+    //         $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
+    //         storageItems.splice(collectionsIndex, 1)
+    //         localStorage.setItem("saved", JSON.stringify(storageItems))
+    //     }
 
     // }
 
-
-
-    // .index(this) finds the index or (position in array) of all the elements with the same class
-    var collectionsIndex = bookmarkIcon.index(this)
-    console.log(collectionsIndex)
-    // the condition makes sure that the index exists within the correct range before executing
-    if (collectionsIndex >= 0 && collectionsIndex < results.length) {
-        var storageItems = JSON.parse(localStorage.getItem("saved")) || []
-
-        //  .some() runs through the entire array and returns true or false depending on whether everything inside the return is ===
-        var isAlreadySaved = storageItems.some(function (collectionsSavedItem) {
-            return (
-                collectionsSavedItem.title === results[collectionsIndex].title &&
-                collectionsSavedItem.artist === results[collectionsIndex].artist &&
-                collectionsSavedItem.provider === results[collectionsIndex].provider &&
-                collectionsSavedItem.image === results[collectionsIndex].image
-            )
-        })
-
-        if (!isAlreadySaved) {
-            $(this).attr("class", "fa-solid fa-bookmark bookmark-icon solid")
-            storageItems.push(results[collectionsIndex])
-            localStorage.setItem("saved", JSON.stringify(storageItems))
-        }
-        //removes saved item and deselects bookmark if user clicks highlighted bookmark
-        else if (isAlreadySaved) {
-            $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
-            storageItems.splice(collectionsIndex, 1)
-            localStorage.setItem("saved", JSON.stringify(storageItems))
-        }
-
-    }
-
-    // for(let i = 0; i<)
-    // var bookmarkIndex = $(this).parent().children("img")
-    //bookmarkIndex.eq()
-    // console.log(bookmarkIndex)
-    //var storageItems = results[i]
-    //localStorage.setItem("saved", JSON.stringify(storageItems))
+//     // for(let i = 0; i<)
+//     // var bookmarkIndex = $(this).parent().children("img")
+//     //bookmarkIndex.eq()
+//     // console.log(bookmarkIndex)
+//     //var storageItems = results[i]
+//     //localStorage.setItem("saved", JSON.stringify(storageItems))
 
 
 
-})
+// })
