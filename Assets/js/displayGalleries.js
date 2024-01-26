@@ -34,20 +34,5 @@ $(document).ready(function () {
     displayGalleriesData();
 
 
-
-    // $(".toUnsave").on("click", function () {
-
-    //     var galleriesIndex = $(".toUnsave").index(this);
-
-    //     if (galleriesIndex >= 0 && galleriesIndex < galleriesArray.length) {
-
-    //         galleriesArray.splice(galleriesIndex, 1);
-
-    //         localStorage.setItem("saved", JSON.stringify(galleriesArray));
-
-
-
-    //     }
-    // });
 });
 

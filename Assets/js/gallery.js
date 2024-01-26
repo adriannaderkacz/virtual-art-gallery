@@ -99,17 +99,19 @@ function modal() {
     }
 
     function openModal(imageSrc, id) {
-        const hasImg = (element) => element = id;
+        const key = id;
+        let galleryObject = JSON.parse(localStorage.getItem(key))
         document.getElementById("modalImage").src = imageSrc;
-        document.getElementById("modalDescription").innerText = galleriesArray[galleriesArray.findIndex(hasImg)].title;
-        $("#modalDescription").append(`<p >Artist: ${galleriesArray[galleriesArray.findIndex(hasImg)].artist}</p>`)
-        $("#modalDescription").append(`<p >Provider: ${galleriesArray[galleriesArray.findIndex(hasImg)].provider}</p>`)
+        document.getElementById("modalDescription").innerText = galleryObject.title;
+        $("#modalDescription").append(`<p >Artist: ${galleryObject.artist}</p>`)
+        $("#modalDescription").append(`<p >Provider: ${galleryObject.provider}</p>`)
         modal.style.display = "block";
     }
 
     document.querySelectorAll('.modal-trigger').forEach(img => {
         img.onclick = function () {
             openModal(this.src, this.id);
+            
         };
     });
 }
