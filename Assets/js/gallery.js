@@ -23,26 +23,26 @@ function getBookmarks() {
 function displaySaved() {
 
     $(".items").append(`<div class="item active">
-    <img class="modal-trigger" src="${galleriesArray[0].image}" id = " ${storageArray[0]}">
+    <img class="modal-trigger" src="${galleriesArray[0].image}" id = "${storageArray[0]}">
     
     <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff;"></i>
 </div>`)
 
     $(".items").append(`<div class="item next">
-    <img class="modal-trigger" src="${galleriesArray[1].image}" id = " ${storageArray[1]}">
+    <img class="modal-trigger" src="${galleriesArray[1].image}" id = "${storageArray[1]}">
     <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff;"></i>
 </div>`)
 
     for (let i = 2; i < galleriesArray.length - 1; i++) {
 
         $(".items").append(`<div class="item">
-        <img class="modal-trigger " src="${galleriesArray[i].image}" id = " ${storageArray[i]}">
+        <img class="modal-trigger " src="${galleriesArray[i].image}" id = "${storageArray[i]}">
         <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff;"></i>
     </div>
         `)
     }
     $(".items").append(`<div class="item prev">
-                <img class="modal-trigger" src="${galleriesArray[galleriesArray.length - 1].image}" id = " ${storageArray[storageArray.length - 1]}">
+                <img class="modal-trigger" src="${galleriesArray[galleriesArray.length - 1].image}" id = "${storageArray[storageArray.length - 1]}">
                 <i class="fa-solid fa-bookmark bookmark-icon solid" style="color: #ffffff; "></i>
             </div>`)
 
@@ -99,17 +99,19 @@ function modal() {
     }
 
     function openModal(imageSrc, id) {
-        const hasImg = (element) => element = id;
+        const key = id;
+        let galleryObject = JSON.parse(localStorage.getItem(key))
         document.getElementById("modalImage").src = imageSrc;
-        document.getElementById("modalDescription").innerText = galleriesArray[galleriesArray.findIndex(hasImg)].title;
-        $("#modalDescription").append(`<p >Artist: ${galleriesArray[galleriesArray.findIndex(hasImg)].artist}</p>`)
-        $("#modalDescription").append(`<p >Provider: ${galleriesArray[galleriesArray.findIndex(hasImg)].provider}</p>`)
+        document.getElementById("modalDescription").innerText = galleryObject.title;
+        $("#modalDescription").append(`<p >Artist: ${galleryObject.artist}</p>`)
+        $("#modalDescription").append(`<p >Provider: ${galleryObject.provider}</p>`)
         modal.style.display = "block";
     }
 
     document.querySelectorAll('.modal-trigger').forEach(img => {
         img.onclick = function () {
             openModal(this.src, this.id);
+            
         };
     });
 }
@@ -140,11 +142,26 @@ $(document).ready(function () {
 
         const keysArray = JSON.parse(localStorage.getItem("keys")) || []
 
-        
+        console.log(keysArray)
 
-        if (!keysArray.includes(id)) {
+        if (keysArray.includes(id) === true) {
+
+            const remove = keysArray.indexOf(id)
+            if (remove !== -1) {
+                keysArray.splice(remove, 1)
+                localStorage.removeItem(id)
+                localStorage.setItem("keys", JSON.stringify(keysArray))
+                $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
+                const is = $(this).attr("class")
+                console.log(remove)
+            }
+
+
+        }
+        else {
+
             const hasImg = (element) => element = id;
-            
+
             keysArray.push(id)
 
             localStorage.setItem("keys", JSON.stringify(keysArray))
@@ -155,20 +172,7 @@ $(document).ready(function () {
 
             const it = $(this).attr("class")
 
-            console.log(it)
-
-
-        }
-        else {
-            const remove = keysArray.indexOf(id)
-            if (remove !== -1) {
-                keysArray.splice(remove, 1)
-                localStorage.removeItem(id)
-                localStorage.setItem("keys", JSON.stringify(keysArray))
-                $(this).attr("class", "fa-regular fa-bookmark bookmark-icon")
-                const is = $(this).attr("class")
-                console.log(is)
-            }
+            console.log("its added now")
 
         }
     })

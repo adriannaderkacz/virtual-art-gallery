@@ -137,12 +137,17 @@ function tempStoreData(europeanaData, harvardData) {
             provider: prov,
             image: img
         }
-
+        
+        
 
     }
 
+    if(results.length === 0){
+        $(".more-btn").remove()
+        $(".container").append(`<h3>No search results found!</h3>`)
+    }
     results.sort(() => Math.random() - 0.5)
-
+    console.log(results)
     return results
 
 }
@@ -156,6 +161,10 @@ function tempStoreData(europeanaData, harvardData) {
  **/
 function displayData() {
 
+    if(results.length === 0){
+        
+        return
+    }
     for (let i = 0; i < resultsOnScreen; i++) {
         if (results[i].image !== "empty") {
             const eachColumn = i % 3
@@ -171,7 +180,7 @@ function displayData() {
             container.eq(eachColumn).append(imageWrapDiv)
             imageWrapDiv.append(imageTag, pTag, iconTag)
             $(imageTag).attr("src", results[i].image)
-            $(pTag).text("Name: " + results[i].title)
+            $(pTag).text("Name: " + results[i].title.slice(0, 20)+"...")
 
 
 
@@ -225,8 +234,9 @@ function displayMorebtn() {
 }
 
 $(document).ready(function () {
-
+    
     fetchingAPI()
+    
     displayMorebtn()
 
     $("#more-btn").on("click", function () {
