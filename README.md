@@ -13,7 +13,7 @@ Designed with an eye for aesthetics and user-friendliness, the Virtual Art Galle
 
 In essence, the Virtual Art Gallery is not just a showcase of art; it is a narrative woven from the threads of artistic expression across time and space. It's a digital haven where art lovers can immerse themselves in the beauty of creativity, learn from the stories of the past, and connect with the essence of human expression in its most visual form.
 
-Presentation slide deck: https://www.canva.com/design/DAF67EJ8E_M/9F723BdWMs_MHfFMpicQrw/edit?utm_content=DAF67EJ8E_M&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton.
+Presentation slide deck is available [here](https://www.canva.com/design/DAF67EJ8E_M/9F723BdWMs_MHfFMpicQrw/edit?utm_content=DAF67EJ8E_M&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton).
 
 ## Table of Contents 
 - [Deployment](#deployment)
